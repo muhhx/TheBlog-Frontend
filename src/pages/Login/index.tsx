@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import BASE_URL from "../../config/axios";
+import { login } from "../../features/auth/authSlice";
 import * as C from "./styles";
 
 const SHOW_ICON =
@@ -10,12 +11,14 @@ const SHOW_ICON =
 
 export default function Login() {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
 
   const [displayPwd, setDisplayPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -24,15 +27,12 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!email || !pwd) {
-      return setErr("Preencha todos os campos.");
-    }
+    setLoading(true);
+    if (!email || !pwd) return setErr("Preencha todos os campos.");
 
     if (isAuth) {
-      return setErr(
-        "Você já está logado, faça o logout para acessar outra conta."
-      );
+      setErr("Você já está logado, faça o logout para acessar outra conta.");
+      return setLoading(false);
     }
 
     try {
@@ -45,14 +45,16 @@ export default function Login() {
       setPwd("");
       setDisplayPwd(false);
       setErr("");
-
+      setLoading(false);
+      dispatch(login(response.data.userName));
       navigate("/private");
     } catch (error: any) {
       if (error?.response?.data?.message) {
-        return setErr(error.response.data.message);
+        setErr(error.response.data.message);
       } else {
-        return setErr("Algo deu errado ao fazer o login");
+        setErr("Algo deu errado ao fazer o login");
       }
+      setLoading(false);
     }
   };
 
@@ -109,9 +111,7 @@ export default function Login() {
               </C.ShortLink>
             </span>
             <span>
-              <C.ShortLink to="/confirmpassword">
-                Confirmar meu email
-              </C.ShortLink>
+              <C.ShortLink to="/confirmemail">Confirmar meu email</C.ShortLink>
             </span>
           </C.ShortContainer>
         </C.Form>

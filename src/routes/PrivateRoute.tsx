@@ -1,22 +1,16 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 
 export default function PrivateRoute() {
-  const { status, loggedOut } = useSelector((state: RootState) => state.auth);
+  const { status, isAuth } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loggedOut) return navigate("/");
-  }, [loggedOut]);
 
   return status === "pending" || status === "idle" ? (
     <p>"Loading..."</p>
-  ) : status === "success" ? (
+  ) : isAuth ? (
     <Outlet />
   ) : (
-    <Navigate to="/" state={{ location }} replace />
+    <Navigate to="/" state={{ from: location }} replace />
   );
 }

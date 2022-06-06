@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import BASE_URL from "../../config/axios";
 import * as C from "./styles";
 
+//adicionar loading state quano fazer a requisição
+//fazer background dinamico
+//arrumar painel mostrando como deve ser a senha
+
 const NAME_REJEX = /^[a-zA-Z_]+( [a-zA-Z_]+)*$/;
 const PWD_REJEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const ERR_ICON =

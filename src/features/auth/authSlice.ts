@@ -1,72 +1,26 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authService";
-import { ILoginData } from "./types";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import BASE_URL from "../../config/axios";
 
 interface IAuth {
   isAuth: boolean;
+  name: null | string;
   status: "idle" | "pending" | "success" | "failure";
-  error: null | string;
-  loggedOut: boolean;
 }
 
 export const fetchUser = createAsyncThunk(
-  "auth/fetchAuth",
+  "auth/fetchUser",
   async (payload, thunkAPI) => {
     try {
-      const data = await authService.fetchUser();
+      const data = await BASE_URL.get("/session");
 
       return data;
-    } catch (error) {
-      //@ts-ignore
-      if (error instanceof Error && error.response.data.message) {
-        //@ts-ignore
-        const message = error.response.data.message;
-        return thunkAPI.rejectWithValue(message);
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        return thunkAPI.rejectWithValue(
+          JSON.stringify(error.response.data.message)
+        );
       } else {
-        const message = "Algo de inesperado aconteceu";
-        return thunkAPI.rejectWithValue(message);
-      }
-    }
-  }
-);
-
-export const loginUser = createAsyncThunk(
-  "auth/loginAuth",
-  async (loginData: ILoginData, thunkAPI) => {
-    try {
-      const data = await authService.login(loginData);
-
-      return data;
-    } catch (error) {
-      //@ts-ignore
-      if (error instanceof Error && error.response.data.message) {
-        //@ts-ignore
-        const message = error.response.data.message;
-        return thunkAPI.rejectWithValue(message);
-      } else {
-        const message = "Algo de inesperado aconteceu";
-        return message;
-      }
-    }
-  }
-);
-
-export const logoutUser = createAsyncThunk(
-  "auth/logoutAuth",
-  async (payload, thunkAPI) => {
-    try {
-      const data = await authService.logout();
-
-      return data;
-    } catch (error) {
-      //@ts-ignore
-      if (error instanceof Error && error.response.data.message) {
-        //@ts-ignore
-        const message = error.response.data.message;
-        return thunkAPI.rejectWithValue(message);
-      } else {
-        const message = "Algo de inesperado aconteceu";
-        return thunkAPI.rejectWithValue(message);
+        return thunkAPI.rejectWithValue("Algo deu errado");
       }
     }
   }
@@ -74,56 +28,38 @@ export const logoutUser = createAsyncThunk(
 
 const initialState: IAuth = {
   isAuth: false,
-  loggedOut: false,
+  name: null,
   status: "idle",
-  error: null,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    login: (state, action: PayloadAction<string>) => {
+      state.isAuth = true;
+      state.name = action.payload;
+    },
+    logout: (state) => {
+      state.isAuth = false;
+      state.name = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(fetchUser.fulfilled, (state) => {
+      .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "success";
         state.isAuth = true;
+        state.name = action.payload?.data.data.userName || "Usuário";
       })
       .addCase(fetchUser.rejected, (state) => {
-        state.status = "failure";
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.status = "pending";
-        state.error = null;
-        state.loggedOut = false;
-      })
-      .addCase(loginUser.fulfilled, (state) => {
-        state.status = "success";
-        state.isAuth = true;
-        state.error = null;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = "failure";
-        state.error = action.payload
-          ? String(action.payload)
-          : "Algo deu errado ao fazer login.";
-      })
-      .addCase(logoutUser.pending, (state) => {
-        state.status = "pending";
-        state.error = null;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.status = "success";
-        state.isAuth = false;
-        state.loggedOut = true;
-      })
-      .addCase(logoutUser.rejected, (state) => {
         state.status = "failure";
       });
   },
 });
 
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;
