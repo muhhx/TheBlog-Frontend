@@ -1,71 +1,121 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "../../app/store";
-import { loginUser } from "../../features/auth/authSlice";
-import { Link, useNavigate } from "react-router-dom";
-
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../app/store";
+import BASE_URL from "../../config/axios";
 import * as C from "./styles";
 
+const SHOW_ICON =
+  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-eye-8.png&r=116&g=116&b=116";
+
 export default function Login() {
-  const auth = useSelector((state: RootState) => state.auth);
-  const dispatch: AppDispatch = useDispatch();
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [err, setErr] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [pwd, setPwd] = useState("");
 
-  async function submitLogin(e: React.MouseEvent) {
+  const [displayPwd, setDisplayPwd] = useState(false);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    setErr("");
+  }, [email, pwd]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setErr(null);
-    if (auth.isAuth) {
-      return setErr("Você já está logado!");
-    }
-    const result = await dispatch(loginUser({ email, password }));
-    console.log(result);
-
-    if (result.error) {
-      return setErr(result.payload);
+    if (!email || !pwd) {
+      return setErr("Preencha todos os campos.");
     }
 
-    navigate("/private");
-  }
+    if (isAuth) {
+      return setErr(
+        "Você já está logado, faça o logout para acessar outra conta."
+      );
+    }
+
+    try {
+      const response = await BASE_URL.post("/session", {
+        email,
+        password: pwd,
+      });
+
+      setEmail("");
+      setPwd("");
+      setDisplayPwd(false);
+      setErr("");
+
+      navigate("/private");
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        return setErr(error.response.data.message);
+      } else {
+        return setErr("Algo deu errado ao fazer o login");
+      }
+    }
+  };
 
   return (
     <C.Section>
-      <C.Login>
-        <C.HeaderContainer>
-          <C.Title>Fazer Login</C.Title>
-          {auth.status === "pending" ? <p>Loading...</p> : ""}
-          {err ? <p style={{ color: "red" }}>{err}</p> : ""}
-        </C.HeaderContainer>
-        <C.FieldsContainer>
-          <C.InputContainer>
-            <C.Input
-              type="email"
-              placeholder="Email..."
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </C.InputContainer>
-          <C.InputContainer>
-            <C.Input
-              type="password"
-              placeholder="Password..."
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </C.InputContainer>
-          <C.Button onClick={(e) => submitLogin(e)}>Fazer Login</C.Button>
-        </C.FieldsContainer>
-        <C.OptionsContainer>
-          <C.Span>
-            Novo usuário? <Link to="/register">Criar uma conta</Link>
-          </C.Span>
-          <C.Span>
-            Esqueceu sua senha? <Link to="/register">Mandar email</Link>
-          </C.Span>
-        </C.OptionsContainer>
-      </C.Login>
+      <C.FormContainer>
+        <C.Form onSubmit={handleSubmit}>
+          <p>THE BLOG.</p>
+          <C.HeaderWrapper>
+            <C.Header>Iniciar Sessão</C.Header>
+            <C.Span>
+              Você não possui uma conta?
+              <C.NavLink to="/register"> Registrar.</C.NavLink>
+            </C.Span>
+            {err ? <C.Error>{err}</C.Error> : ""}
+          </C.HeaderWrapper>
+          <C.InputWrapper>
+            <C.InputContainer>
+              <C.Label htmlFor="email">Email</C.Label>
+              <C.Input
+                type="text"
+                id="email"
+                autoComplete="off"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+            </C.InputContainer>
+            <C.InputContainer>
+              <C.Label htmlFor="pwd">Password</C.Label>
+              <C.Input
+                type={!displayPwd ? "password" : "text"}
+                id="pwd"
+                autoComplete="off"
+                required
+                onChange={(e) => setPwd(e.target.value)}
+                value={pwd}
+              />
+              <C.ShowPwd
+                onClick={() => setDisplayPwd(!displayPwd ? true : false)}
+                backgroundUrl={SHOW_ICON}
+              />
+            </C.InputContainer>
+          </C.InputWrapper>
+          <C.ButtonContainer>
+            <C.Button disabled={!email || !pwd ? true : false}>
+              Fazer Login
+            </C.Button>
+          </C.ButtonContainer>
+          <C.ShortContainer>
+            <span>
+              <C.ShortLink to="/forgotpassword">
+                Esqueci minha senha
+              </C.ShortLink>
+            </span>
+            <span>
+              <C.ShortLink to="/confirmpassword">
+                Confirmar meu email
+              </C.ShortLink>
+            </span>
+          </C.ShortContainer>
+        </C.Form>
+      </C.FormContainer>
     </C.Section>
   );
 }

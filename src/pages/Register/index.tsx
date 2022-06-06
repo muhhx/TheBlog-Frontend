@@ -61,10 +61,10 @@ export default function Register() {
         passwordConfirmation: matchPwd,
       });
     } catch (err: any) {
-      if (!err?.response) {
-        return setError("Nenhuma resposta do servidor");
-      } else if (err.response?.data?.error?.code === 11000) {
+      if (err.response?.data?.error?.code === 11000) {
         return setValidEmail(false);
+      } else if (err?.response?.data?.message) {
+        return setError(err.response.data.message);
       } else {
         return setError(
           "Algo deu errado ao tentar criar sua conta, tente novamente mais tarde."
