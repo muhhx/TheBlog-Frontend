@@ -1,13 +1,15 @@
 import axios from "axios";
 
-export const BASE_URL = axios.create({
+const BASE_URL = "http://localhost:5000";
+
+export const axiosPublic = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5000/api",
+  baseURL: BASE_URL,
 });
 
 export const axiosPrivate = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5000",
+  baseURL: BASE_URL,
 });
 
-export default BASE_URL;
+export default axiosPublic;

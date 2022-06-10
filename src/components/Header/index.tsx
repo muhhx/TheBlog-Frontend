@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState, AppDispatch } from "../../app/store";
 import { logout } from "../../features/auth/authSlice";
-import BASE_URL from "../../config/axios";
+import axiosPublic from "../../config/axios";
 import * as C from "./styles";
 
 export default function Header() {
@@ -14,7 +14,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      const response = await BASE_URL.delete("/session");
+      const response = await axiosPublic.delete("/api/session");
 
       dispatch(logout());
       navigate("/");

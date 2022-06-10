@@ -11,6 +11,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ConfirmEmail from "../pages/ConfirmEmail";
 import ValidateEmail from "../pages/ValidateEmail";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 export default function Routing() {
   return (
@@ -21,18 +23,11 @@ export default function Routing() {
         </Route>
         <Route element={<SecondaryLayout />}>
           <Route path="/login" element={<Login />} />
-        </Route>
-        <Route element={<SecondaryLayout />}>
           <Route path="/register" element={<Register />} />
-        </Route>
-        <Route element={<SecondaryLayout />}>
           <Route path="/confirmemail" element={<ConfirmEmail />} />
-        </Route>
-        <Route element={<SecondaryLayout />}>
           <Route path="/confirmemail/:id" element={<ValidateEmail />} />
-        </Route>
-        <Route element={<SecondaryLayout />}>
-          <Route path="/forgotpassword" element={<div>Forgot password</div>} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/forgotpassword/:id" element={<ResetPassword />} />
         </Route>
 
         <Route element={<PrivateRoute />}>

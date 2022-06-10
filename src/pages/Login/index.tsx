@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../app/store";
-import BASE_URL from "../../config/axios";
+import axiosPublic from "../../config/axios";
 import { login } from "../../features/auth/authSlice";
 import Spinner from "../../components/Spinner";
 import * as C from "./styles";
@@ -37,7 +37,7 @@ export default function Login() {
     }
 
     try {
-      const response = await BASE_URL.post("/session", {
+      const response = await axiosPublic.post("/api/session", {
         email,
         password: pwd,
       });

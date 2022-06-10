@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import BASE_URL from "../../config/axios";
+import axiosPublic from "../../config/axios";
 import Spinner from "../../components/Spinner";
 import * as C from "./styles";
 
-//adicionar loading state quano fazer a requisição
-//fazer background dinamico
 //arrumar painel mostrando como deve ser a senha
 
 const NAME_REJEX = /^[a-zA-Z_]+( [a-zA-Z_]+)*$/;
@@ -59,7 +57,7 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await BASE_URL.post("/user", {
+      const response = await axiosPublic.post("/api/user", {
         name,
         email,
         emailConfirmation: matchEmail,
@@ -79,7 +77,7 @@ export default function Register() {
       }
     }
 
-    await BASE_URL.post("/confirmemail", { email });
+    await axiosPublic.post("/api/confirmemail", { email });
     setSuccess(true);
     setName("");
     setEmail("");
@@ -195,20 +193,6 @@ export default function Register() {
                 onMouseOut={() => setShowInfo(false)}
                 onClick={() => setShowInfo(!showInfo ? true : false)}
               />
-              {!showInfo ? (
-                ""
-              ) : (
-                <C.Panel>
-                  Sua senha deve conter:
-                  <br />
-                  8 a 24 caracteres.
-                  <br />
-                  Caracter em uppercase, lowercase, um número e um caracter
-                  especial.
-                  <br />
-                  Os caracteres especiais permitidos são ! @ # $ %
-                </C.Panel>
-              )}
               <C.InputHolder>
                 <C.Input
                   type={showPwd ? "text" : "password"}
@@ -226,6 +210,20 @@ export default function Register() {
                 />
               </C.InputHolder>
               {!validPwd && pwd ? <C.Error>Senha inválida.</C.Error> : ""}
+              {!showInfo ? (
+                ""
+              ) : (
+                <C.Panel>
+                  Sua senha deve conter:
+                  <br />
+                  8 a 24 caracteres.
+                  <br />
+                  Caracter em uppercase, lowercase, um número e um caracter
+                  especial.
+                  <br />
+                  Os caracteres especiais permitidos são ! @ # $ %
+                </C.Panel>
+              )}
             </C.InputContainer>
             <C.InputContainer>
               <C.Label htmlFor="pwdConfirmation">Password confirmation</C.Label>

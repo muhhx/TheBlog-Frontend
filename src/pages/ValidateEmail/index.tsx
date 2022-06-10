@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import BASE_URL from "../../config/axios";
+import Spinner from "../../components/Spinner";
+import axiosPublic from "../../config/axios";
 import * as C from "./styles";
 
 //Quando o usuário cair na pagina, automaticamente fazer uma requisição axios e confirmar email ou nao
@@ -15,9 +16,8 @@ export default function ValidateEmail() {
     const confirmEmail = async () => {
       try {
         setLoading(true);
-        const response = await BASE_URL.put(`/confirmemail/${id}`);
+        const response = await axiosPublic.put(`/api/confirmemail/${id}`);
 
-        console.log(response);
         setSuccess(true);
       } catch (error: any) {
         if (error?.response?.data?.message) {
@@ -33,7 +33,7 @@ export default function ValidateEmail() {
   return (
     <>
       {loading ? (
-        "Loading..."
+        <Spinner />
       ) : success ? (
         <C.HeaderWrapper>
           <C.Header>Email Confirmado!</C.Header>

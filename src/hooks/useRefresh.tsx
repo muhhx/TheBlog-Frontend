@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
-import BASE_URL from "../config/axios";
+import axiosPublic from "../config/axios";
 
 export default function useRefresh() {
   const dispatch = useDispatch();
 
   const refresh = async () => {
     try {
-      const response = await BASE_URL.put("/session");
+      const response = await axiosPublic.put("/api/session");
 
       return response.data;
     } catch (error) {

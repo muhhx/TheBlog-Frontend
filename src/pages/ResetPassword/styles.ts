@@ -43,6 +43,26 @@ export const NavLink = styled(Link)`
   font-size: 14px;
 `;
 
+export const Error = styled.label`
+  color: #e34850;
+  font-size: 12px;
+  font-weight: 500;
+  padding-top: 5px;
+`;
+
+export const ApiError = styled.div`
+  margin-top: 20px;
+  padding: 5px 10px;
+  color: #f4f4f4;
+  background-color: #e34850;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
+
 export const InputWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -59,15 +79,15 @@ export const InputContainer = styled.div`
   position: relative;
 `;
 
-export const InputHolder = styled.div`
-  width: 100%;
-  position: relative;
-`;
-
 export const Label = styled.label`
   color: #747474;
   font-size: 10px;
   font-weight: 500;
+`;
+
+export const InputHolder = styled.div`
+  width: 100%;
+  position: relative;
 `;
 
 export const Input = styled.input`
@@ -84,6 +104,52 @@ export const Input = styled.input`
   &:focus {
     border-bottom: solid 2px #1473e6;
   }
+`;
+
+export const Icon = styled.div`
+  position: absolute;
+  right: 0px;
+  bottom: 6px;
+  height: 15px;
+  aspect-ratio: 1;
+  background-image: url(${(props: IStyledProps) => props.backgroundUrl});
+  background-position: center;
+  background-size: cover;
+`;
+
+export const ShowPwd = styled.div`
+  position: absolute;
+  right: 20px;
+  bottom: 6px;
+  height: 15px;
+  aspect-ratio: 1;
+  background-image: url(${(props: IStyledProps) => props.backgroundUrl});
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+`;
+
+export const PwdInfo = styled.div`
+  position: absolute;
+  top: 1px;
+  left: 55px;
+  height: 12px;
+  aspect-ratio: 1;
+  background-image: url(${(props: IStyledProps) => props.backgroundUrl});
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+`;
+
+export const Panel = styled.div`
+  position: absolute;
+  top: -100px;
+  background-color: #0d66d0;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 15px;
+  font-size: 10px;
+  max-width: 400px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -117,46 +183,4 @@ export const Button = styled.button`
   &:hover:enabled {
     background-color: #0d66d0;
   }
-`;
-
-export const ShowPwd = styled.div`
-  position: absolute;
-  right: 0px;
-  bottom: 23px;
-  height: 15px;
-  aspect-ratio: 1;
-  background-image: url(${(props: IStyledProps) => props.backgroundUrl});
-  background-position: center;
-  background-size: cover;
-  cursor: pointer;
-`;
-
-export const ShortLink = styled(Link)`
-  color: #1473e6;
-  text-decoration: none;
-  font-weight: 400;
-  font-size: 12px;
-`;
-
-export const ShortContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  border-top: solid 1px #eaeaea;
-  padding-top: 20px;
-`;
-
-export const Error = styled.div`
-  margin-top: 20px;
-  padding: 5px 10px;
-  color: #f4f4f4;
-  background-color: #e34850;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
 `;

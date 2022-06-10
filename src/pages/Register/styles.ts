@@ -69,6 +69,7 @@ export const Button = styled.button`
     background-color: #0d66d0;
   }
 `;
+
 export const InputContainer = styled.div`
   width: 100%;
   display: flex;
@@ -173,7 +174,13 @@ export const Panel = styled.div`
 
 export const ApiError = styled.div`
   margin-top: 20px;
-  color: #e34850;
+  padding: 5px 10px;
+  color: #f4f4f4;
+  background-color: #e34850;
   font-size: 12px;
   font-weight: 500;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `;

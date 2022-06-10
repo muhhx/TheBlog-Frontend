@@ -31,9 +31,15 @@ export const NavLink = styled(Link)`
 
 export const Error = styled.div`
   margin-top: 20px;
-  color: #e34850;
+  padding: 5px 10px;
+  color: #f4f4f4;
+  background-color: #e34850;
   font-size: 12px;
   font-weight: 500;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `;
 
 export const ShortLink = styled(Link)`

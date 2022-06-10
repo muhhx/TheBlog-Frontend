@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosPublic from "../../config/axios";
 import Spinner from "../../components/Spinner";
 import * as C from "./styles";
 
-export default function ConfirmEmail() {
+export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
+  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function ConfirmEmail() {
 
     try {
       setLoading(true);
-      const response = await axiosPublic.post("/api/confirmemail", { email });
+      const response = await axiosPublic.post("/api/forgotpassword", { email });
 
       console.log(response);
       setSuccess(true);
@@ -30,7 +29,7 @@ export default function ConfirmEmail() {
       if (error?.response?.data?.message) {
         setError(error.response.data.message);
       } else {
-        setError("Não foi possível mandar seu email de confirmação");
+        setError("Não foi possível mandar seu email de recuperação.");
       }
     }
     setLoading(false);
@@ -43,7 +42,7 @@ export default function ConfirmEmail() {
           <p>THE BLOG.</p>
           <C.Header>Email enviado!</C.Header>
           <C.Span>
-            Um email de confirmação foi enviado para seu email. Não esqueça de
+            Um email para recuperar sua senha foi enviado. Não esqueça de
             verificar sua caixa de spam e lixeira!
           </C.Span>
           <C.NavLink to="/login"> Login.</C.NavLink>
@@ -52,9 +51,9 @@ export default function ConfirmEmail() {
         <C.Form onSubmit={handleSubmit}>
           <span>THE BLOG.</span>
           <C.HeaderWrapper>
-            <C.Header>Confirmar e-mail</C.Header>
+            <C.Header>Recuperar Senha</C.Header>
             <C.Span>
-              Já confirmou o email?<C.NavLink to="/login"> Login.</C.NavLink>
+              Já confirmou sua senha?<C.NavLink to="/login"> Login.</C.NavLink>
             </C.Span>
             {error ? <C.Error>{error}</C.Error> : ""}
           </C.HeaderWrapper>
