@@ -31,29 +31,27 @@ export default function ValidateEmail() {
     confirmEmail();
   }, []);
   return (
-    <C.Section>
-      <C.FormContainer>
-        {loading ? (
-          "Loading..."
-        ) : success ? (
-          <C.HeaderWrapper>
-            <C.Header>Email Confirmado!</C.Header>
-            <C.Span>
-              Agora você já pode iniciar sessão.
-              <C.NavLink to="/login"> Fazer login.</C.NavLink>
-            </C.Span>
-          </C.HeaderWrapper>
-        ) : (
-          <C.HeaderWrapper>
-            <C.Header>Algo deu errado!</C.Header>
-            <C.Span>
-              Você já possui uma conta?
-              <C.NavLink to="/login"> Login.</C.NavLink>
-            </C.Span>
-            <C.Error>{error}</C.Error>
-          </C.HeaderWrapper>
-        )}
-      </C.FormContainer>
-    </C.Section>
+    <>
+      {loading ? (
+        "Loading..."
+      ) : success ? (
+        <C.HeaderWrapper>
+          <C.Header>Email Confirmado!</C.Header>
+          <C.Span>
+            Agora você já pode iniciar sessão.
+            <C.NavLink to="/login"> Fazer login.</C.NavLink>
+          </C.Span>
+        </C.HeaderWrapper>
+      ) : (
+        <C.HeaderWrapper>
+          <C.Header>Algo deu errado!</C.Header>
+          <C.Span>
+            Você já possui uma conta?
+            <C.NavLink to="/login"> Login.</C.NavLink>
+          </C.Span>
+          <C.Error>{error}</C.Error>
+        </C.HeaderWrapper>
+      )}
+    </>
   );
 }

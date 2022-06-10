@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BASE_URL from "../../config/axios";
+import Spinner from "../../components/Spinner";
 import * as C from "./styles";
 
 export default function ConfirmEmail() {
@@ -36,46 +37,47 @@ export default function ConfirmEmail() {
   };
 
   return (
-    <C.Section>
-      <C.FormContainer>
-        {success ? (
+    <>
+      {success ? (
+        <C.HeaderWrapper>
+          <p>THE BLOG.</p>
+          <C.Header>Email enviado!</C.Header>
+          <C.Span>
+            Um email de confirmação foi enviado para seu email. Não esqueça de
+            verificar sua caixa de spam e lixeira!
+          </C.Span>
+          <C.NavLink to="/login"> Login.</C.NavLink>
+        </C.HeaderWrapper>
+      ) : (
+        <C.Form onSubmit={handleSubmit}>
+          <span>THE BLOG.</span>
           <C.HeaderWrapper>
-            <p>THE BLOG.</p>
-            <C.Header>Email enviado!</C.Header>
+            <C.Header>Confirmar e-mail</C.Header>
             <C.Span>
-              Um email de confirmação foi enviado para seu email. Não esqueça de
-              verificar sua caixa de spam e lixeira!
+              Já confirmou o email?<C.NavLink to="/login"> Login.</C.NavLink>
             </C.Span>
-            <C.NavLink to="/login"> Login.</C.NavLink>
+            {error ? <C.Error>{error}</C.Error> : ""}
+            {loading ? "Loading..." : ""}
           </C.HeaderWrapper>
-        ) : (
-          <C.Form onSubmit={handleSubmit}>
-            <span>THE BLOG.</span>
-            <C.HeaderWrapper>
-              <C.Header>Confirmar e-mail</C.Header>
-              <C.Span>
-                Já confirmou o email?<C.NavLink to="/login"> Login.</C.NavLink>
-              </C.Span>
-              {error ? <C.Error>{error}</C.Error> : ""}
-              {loading ? "Loading..." : ""}
-            </C.HeaderWrapper>
-            <C.InputContainer>
-              <C.Label htmlFor="email">Email address</C.Label>
-              <C.Input
-                type="text"
-                id="email"
-                autoComplete="off"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </C.InputContainer>
-            <C.ButtonContainer>
-              <C.Button disabled={!email ? true : false}>Enviar email</C.Button>
-            </C.ButtonContainer>
-          </C.Form>
-        )}
-      </C.FormContainer>
-    </C.Section>
+          <C.InputContainer>
+            <C.Label htmlFor="email">Email address</C.Label>
+            <C.Input
+              type="text"
+              id="email"
+              autoComplete="off"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </C.InputContainer>
+          <C.ButtonContainer>
+            <C.Button disabled={!email || loading ? true : false}>
+              Enviar email
+              {loading ? <Spinner /> : ""}
+            </C.Button>
+          </C.ButtonContainer>
+        </C.Form>
+      )}
+    </>
   );
 }

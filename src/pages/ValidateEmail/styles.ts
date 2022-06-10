@@ -1,37 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const Section = styled.section`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-  padding: 30px 0px;
-
-  @media only screen and (max-width: 530px) {
-    padding: 0px;
-  }
-`;
-
-export const FormContainer = styled.div`
-  width: 100%;
-  max-width: 530px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 40px 56px;
-
-  @media only screen and (max-width: 530px) {
-    border-radius: 0px;
-    min-height: 100vh;
-    align-items: flex-start;
-  }
-`;
-
 export const HeaderWrapper = styled.div`
   width: 100%;
   display: flex;

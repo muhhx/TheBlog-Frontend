@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import BASE_URL from "../../config/axios";
+import { RootState } from "../../app/store";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 interface IAuth {
   isAuth: boolean;
@@ -11,10 +12,12 @@ export const fetchUser = createAsyncThunk(
   "auth/fetchUser",
   async (payload, thunkAPI) => {
     try {
-      const data = await BASE_URL.get("/session");
-
+      const axiosPrivate = useAxiosPrivate();
+      const data = await axiosPrivate.get("/api/session");
+      console.log(data);
       return data;
     } catch (error: any) {
+      console.log(error);
       if (error?.response?.data?.message) {
         return thunkAPI.rejectWithValue(
           JSON.stringify(error.response.data.message)
@@ -61,5 +64,6 @@ export const authSlice = createSlice({
   },
 });
 
+export const selectAuth = (state: RootState) => state.auth;
 export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;

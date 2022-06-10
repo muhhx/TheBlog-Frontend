@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Layout from "../components/Layout/Layout";
+import MainLayout from "../layouts/MainLayout/Layout";
+import SecondaryLayout from "../layouts/SecondaryLayout";
 import PrivateRoute from "./PrivateRoute";
 
 import Home from "../pages/Home";
@@ -15,17 +16,27 @@ export default function Routing() {
   return (
     <Router>
       <Routes>
-        <Route element={<Layout />}>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/confirmemail" element={<ConfirmEmail />} />
-        <Route path="/confirmemail/:id" element={<ValidateEmail />} />
-        <Route path="/forgotpassword" element={<div>Forgot password</div>} />
+        <Route element={<SecondaryLayout />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
+        <Route element={<SecondaryLayout />}>
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route element={<SecondaryLayout />}>
+          <Route path="/confirmemail" element={<ConfirmEmail />} />
+        </Route>
+        <Route element={<SecondaryLayout />}>
+          <Route path="/confirmemail/:id" element={<ValidateEmail />} />
+        </Route>
+        <Route element={<SecondaryLayout />}>
+          <Route path="/forgotpassword" element={<div>Forgot password</div>} />
+        </Route>
 
         <Route element={<PrivateRoute />}>
-          <Route element={<Layout />}>
+          <Route element={<MainLayout />}>
             <Route path="/private" element={<Dashboard />} />
           </Route>
         </Route>

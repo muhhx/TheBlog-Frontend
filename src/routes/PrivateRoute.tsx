@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { selectAuth } from "../features/auth/authSlice";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 
 export default function PrivateRoute() {
-  const { status, isAuth } = useSelector((state: RootState) => state.auth);
+  const { status, isAuth } = useSelector(selectAuth);
   const location = useLocation();
 
   return status === "pending" || status === "idle" ? (

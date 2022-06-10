@@ -5,37 +5,6 @@ interface IStyledProps {
   backgroundUrl?: string;
 }
 
-export const Section = styled.section`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-  padding: 30px 0px;
-
-  @media only screen and (max-width: 530px) {
-    padding: 0px;
-  }
-`;
-
-export const FormContainer = styled.div`
-  width: 100%;
-  max-width: 530px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 40px 56px;
-
-  @media only screen and (max-width: 530px) {
-    border-radius: 0px;
-    min-height: 100vh;
-    align-items: flex-start;
-  }
-`;
-
 export const Form = styled.form`
   width: 100%;
   height: 100%;
@@ -76,6 +45,7 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.button`
   background-color: #1473e6;
+  height: 32px;
   border: none;
   border-radius: 100px;
   min-height: 36px;
@@ -84,6 +54,9 @@ export const Button = styled.button`
   font-weight: 600;
   padding: 5px 20px;
   text-align: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
   cursor: pointer;
 
   &:disabled {
@@ -96,7 +69,6 @@ export const Button = styled.button`
     background-color: #0d66d0;
   }
 `;
-
 export const InputContainer = styled.div`
   width: 100%;
   display: flex;
