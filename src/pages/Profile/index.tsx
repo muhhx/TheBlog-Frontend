@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../../app/store";
 import { selectAuth } from "../../features/auth/authSlice";
-import axiosPublic from "../../config/axios";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { selectUserAll, fetchAllUserData } from "../../features/user/userSlice";
+import { IPost } from "../../features/user/userTypes";
+
+import useFollow from "../../hooks/useFollow";
+import useUnfollow from "../../hooks/useUnfollow";
+import useFavorites from "../../hooks/useFavorites";
 
 import * as C from "./styles";
 import Spinner from "../../components/Spinner";
@@ -15,243 +20,135 @@ const EDIT_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-edit-10.png&r=255&g=255&b=255";
 
 export default function Profile() {
-  const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
   const { id } = useParams();
-  const { userId, isAuth } = useSelector(selectAuth);
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const auth = useSelector(selectAuth);
+  const user = useSelector(selectUserAll);
+  const [fSuccess, fError, fLoading, follow] = useFollow();
+  const [uSuccess, uError, uLoading, unfollow] = useUnfollow();
+  const [favorites, error, loading, getFavorites] = useFavorites();
 
   const [option, setOption] = useState(0);
-  const [following, setFollowing] = useState(false);
   const [hover, setHover] = useState(false);
 
-  const [userName, setUserName] = useState("");
-  const [userUsername, setUserUsername] = useState("");
-  const [userInfoId, setUserInfoId] = useState("");
-  const [userPicture, setUserPicture] = useState("");
-  const [userBio, setUserBio] = useState("");
-  const [userFollowers, setUserFollowers] = useState<any>([]);
-  const [userFollowing, setUserFollowing] = useState<any>([]);
-
-  const [userPosts, setUserPosts] = useState<any>([]);
-  const [userPostsLoading, setUserPostsLoading] = useState(false);
-  const [userPostsError, setUserPostsError] = useState("");
-
-  const [userFavs, setUserFavs] = useState<any>([]);
-  const [userFavsLoading, setUserFavsLoading] = useState(false);
-  const [userFavsError, setUserFavsError] = useState("");
-
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const user = await axiosPublic.get(`/api/user/${id}`);
-
-        setUserInfoId(user.data.data[0]._id);
-        setUserName(user.data.data[0].name);
-        setUserUsername(user.data.data[0].username);
-        setUserPicture(user.data.data[0].picture);
-        setUserBio(user.data.data[0].bio);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserInfo();
-  }, []);
-
-  useEffect(() => {
-    const fetchUserFollowing = async () => {
-      try {
-        const following = await axiosPublic.get(`/api/user/${id}/following`);
-
-        setUserFollowing(following.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserFollowing();
-  }, [following]);
-
-  useEffect(() => {
-    if (userId !== userInfoId) {
-      const isFollowing = userFollowers.find((fol: any) => fol._id === userId);
-      if (isFollowing) {
-        setFollowing(true);
-      }
+    if (id && (auth.userId || auth.userId === null)) {
+      dispatch(fetchAllUserData({ username: id, userId: auth.userId }));
+      if (user.isCurrentUser) getFavorites(id);
     }
-  }, [userInfoId, userId, userFollowers]);
+  }, [id, auth.userId]);
 
-  useEffect(() => {
-    const fetchUserFollowers = async () => {
-      try {
-        const followers = await axiosPublic.get(`/api/user/${id}/followers`);
-
-        setUserFollowers(followers.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserFollowers();
-  }, [following]);
-
-  useEffect(() => {
-    const fetchUserPosts = async () => {
-      try {
-        setUserPostsLoading(true);
-        const posts = await axiosPublic.get(`/api/user/${id}/posts`);
-        setUserPosts(posts.data.data);
-        setUserPostsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setUserPostsLoading(false);
-      }
-    };
-    fetchUserPosts();
-  }, []);
-
-  useEffect(() => {
-    const fetchUserFavs = async () => {
-      try {
-        setUserFavsLoading(true);
-        const favs = await axiosPrivate.get(`/api/user/${id}/favorites`);
-        setUserFavs(favs.data.data);
-        setUserFavsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setUserFavsLoading(false);
-      }
-    };
-    if (isAuth && userId === userInfoId) {
-      fetchUserFavs();
-    }
-  }, [isAuth]);
-
-  const handleUnfollow = async () => {
-    try {
-      await axiosPrivate.delete(`/api/follow/${userInfoId}`);
-      setFollowing(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFollow = async () => {
-    try {
-      await axiosPrivate.post(`/api/follow/${userInfoId}`);
-      setFollowing(true);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleButtonSubmit = async () => {
+    if (!auth.isAuth) return navigate("/login");
+    if (user.isCurrentUser) return navigate("/editor");
+    if (!user.isBeingFollowed && auth.username && auth.name)
+      return follow(user.profile._id, auth.username, auth.name); //Seguir
+    if (auth.userId) return unfollow(user.profile._id, auth.userId); //Deixar de seguir
   };
 
   return (
     <C.Container>
-      <C.AsideWrapper>
-        <C.Information>
-          <C.ProfileHeader>
-            <C.Picture image={userPicture} />
-            <C.SpanWrapper>
-              <C.Name>{userName}</C.Name>
-              <C.Span>@{userUsername}</C.Span>
-              <C.Span>{userBio}</C.Span>
-            </C.SpanWrapper>
-          </C.ProfileHeader>
-          {userId === userInfoId ? (
-            <C.Button onClick={() => navigate("/editor")}>
-              <C.Icon image={EDIT_ICON} />
-              <span style={{ paddingTop: "2px" }}>Editar Perfil</span>
-            </C.Button>
-          ) : !isAuth ? (
-            <C.Button onClick={() => navigate("/login")}>
-              <C.Icon image={FOLLOW_ICON} />
-              <span style={{ paddingTop: "2px" }}>Seguir</span>
-            </C.Button>
-          ) : !following ? (
-            <C.Button onClick={handleFollow}>
-              <C.Icon image={FOLLOW_ICON} />
-              <span style={{ paddingTop: "2px" }}>Seguir</span>
-            </C.Button>
-          ) : (
-            <C.Unfollow
-              onMouseOver={() => setHover(true)}
-              onMouseOut={() => setHover(false)}
-              hover={hover}
-              onClick={handleUnfollow}
-            >
-              {hover ? "Deixar de seguir" : "Seguindo"}
-            </C.Unfollow>
-          )}
-          <C.DataWrapper>
-            <C.DataContainer>
-              <span>Posts:</span>
-              <span style={{ fontWeight: "600" }}>{userPosts.length}</span>
-            </C.DataContainer>
-            <C.DataContainer>
-              <span style={{ cursor: "pointer" }}>Seguidores:</span>
-              <span style={{ fontWeight: "600", cursor: "pointer" }}>
-                {userFollowers.length}
-              </span>
-            </C.DataContainer>
-            <C.DataContainer>
-              <span style={{ cursor: "pointer" }}>Seguindo:</span>
-              <span style={{ fontWeight: "600", cursor: "pointer" }}>
-                {userFollowing.length}
-              </span>
-            </C.DataContainer>
-          </C.DataWrapper>
-        </C.Information>
-      </C.AsideWrapper>
-      <C.MainWrapper>
-        <C.OptionWrapper>
-          <C.Option
-            onClick={() => setOption(0)}
-            selected={option === 0 ? true : false}
-          >
-            Posts
-          </C.Option>
-          {userId === userInfoId ? (
-            <C.Option
-              onClick={() => setOption(1)}
-              selected={option === 1 ? true : false}
-            >
-              Favoritos
-            </C.Option>
-          ) : (
-            ""
-          )}
-        </C.OptionWrapper>
-        <C.Posts>
-          {option === 0 ? (
-            userPostsLoading ? (
-              <Spinner />
-            ) : userPostsError ? (
-              "Error"
-            ) : (
-              userPosts.map((post: any) => (
-                <PostCard
-                  key={post._id}
-                  image={post.image}
-                  summary={post.summary}
-                  title={post.title}
-                />
-              ))
-            )
-          ) : userFavsLoading ? (
-            <Spinner />
-          ) : userFavsError ? (
-            <C.Span>Erro</C.Span>
-          ) : userFavs.length === 0 ? (
-            <C.Span>Você ainda não possui posts favoritos.</C.Span>
-          ) : (
-            userFavs.map((post: any) => (
-              <PostCard
-                key={post._id}
-                image={post.image}
-                summary={post.summary}
-                title={post.title}
-              />
-            ))
-          )}
-        </C.Posts>
-      </C.MainWrapper>
+      {user.status === "idle" || user.status === "pending" ? (
+        <Spinner />
+      ) : user.status === "failure" ? (
+        <div>{user.error}</div>
+      ) : (
+        <>
+          <C.AsideWrapper>
+            <C.Information>
+              <C.ProfileHeader>
+                <C.Picture image={user.profile.picture} />
+                {fLoading || uLoading ? <Spinner /> : ""}
+                <C.SpanWrapper>
+                  <C.Name>{user.profile.name}</C.Name>
+                  <C.Span>@{user.profile.username}</C.Span>
+                  <C.Span>{user.profile.bio}</C.Span>
+                </C.SpanWrapper>
+              </C.ProfileHeader>
+              {!user.isBeingFollowed ? (
+                <C.Button onClick={handleButtonSubmit}>
+                  {user.isCurrentUser ? "Editar Perfil" : "Seguir"}
+                  <C.Icon image={FOLLOW_ICON} />
+                </C.Button>
+              ) : (
+                <C.Unfollow
+                  onMouseOver={() => setHover(true)}
+                  onMouseOut={() => setHover(false)}
+                  hover={hover}
+                  onClick={handleButtonSubmit}
+                >
+                  {hover ? "Deixar de seguir" : "Seguindo"}
+                </C.Unfollow>
+              )}
+              <C.DataWrapper>
+                <C.DataContainer>
+                  <span>Posts:</span>
+                  <span style={{ fontWeight: "600" }}>{user.posts.length}</span>
+                </C.DataContainer>
+                <C.DataContainer>
+                  <span style={{ cursor: "pointer" }}>Seguidores:</span>
+                  <span style={{ fontWeight: "600", cursor: "pointer" }}>
+                    {user.followersCount}
+                  </span>
+                </C.DataContainer>
+                <C.DataContainer>
+                  <span style={{ cursor: "pointer" }}>Seguindo:</span>
+                  <span style={{ fontWeight: "600", cursor: "pointer" }}>
+                    {user.followingCount}
+                  </span>
+                </C.DataContainer>
+              </C.DataWrapper>
+            </C.Information>
+          </C.AsideWrapper>
+          <C.MainWrapper>
+            <C.OptionWrapper>
+              <C.Option
+                onClick={() => setOption(0)}
+                selected={option === 0 ? true : false}
+              >
+                Posts
+              </C.Option>
+              {user.isCurrentUser ? (
+                <C.Option
+                  onClick={() => setOption(1)}
+                  selected={option === 1 ? true : false}
+                >
+                  Favoritos
+                </C.Option>
+              ) : (
+                ""
+              )}
+            </C.OptionWrapper>
+            <C.Posts>
+              {option === 0 ? (
+                user.posts.map((post: IPost, i) => (
+                  <PostCard
+                    key={i}
+                    image={post.image}
+                    summary={post.summary}
+                    title={post.title}
+                  />
+                ))
+              ) : loading ? (
+                <Spinner />
+              ) : error ? (
+                <C.Span>{error}</C.Span>
+              ) : (
+                favorites.map((post: IPost, i) => (
+                  <PostCard
+                    key={i}
+                    image={post.image}
+                    summary={post.summary}
+                    title={post.title}
+                  />
+                ))
+              )}
+            </C.Posts>
+          </C.MainWrapper>
+        </>
+      )}
     </C.Container>
   );
 }

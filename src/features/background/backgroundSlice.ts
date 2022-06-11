@@ -1,11 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import axiosPublic from "../../config/axios";
-
-interface IBackground {
-  image: string | null;
-  status: "idle" | "pending" | "success" | "failure";
-}
+import IBackground from "./backgroundTypes";
+import backgroundServices from "./backgroundServices";
 
 const initialState: IBackground = {
   image: null,
@@ -16,7 +12,7 @@ export const fetchBackground = createAsyncThunk(
   "background/fetchBackground",
   async () => {
     try {
-      const result = await axiosPublic.get("/api/background");
+      const result = await backgroundServices.fetch();
 
       return result.data.selectedImage;
     } catch (error) {

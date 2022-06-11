@@ -49,8 +49,9 @@ export default function Login() {
       setLoading(false);
       dispatch(
         login({
-          username: response.data.userName,
+          name: response.data.userName,
           userId: response.data.userId,
+          username: response.data.userUsername,
         })
       );
       navigate("/private");

@@ -1,24 +1,14 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-
-interface IAuth {
-  isAuth: boolean;
-  name: null | string;
-  userId: null | string;
-  status: "idle" | "pending" | "success" | "failure";
-}
+import IAuth from "./authTypes";
 
 const initialState: IAuth = {
   isAuth: false,
   name: null,
+  username: null,
   userId: null,
   status: "idle",
 };
-
-interface IProps {
-  username: string;
-  userId: string;
-}
 
 export const authSlice = createSlice({
   name: "auth",
@@ -27,24 +17,33 @@ export const authSlice = createSlice({
     fetchPending: (state) => {
       state.status = "pending";
     },
-    fetchFulfilled: (state, action: PayloadAction<IProps>) => {
+    fetchFulfilled: (
+      state,
+      action: PayloadAction<{ name: string; userId: string; username: string }>
+    ) => {
       state.status = "success";
       state.isAuth = true;
-      state.name = action.payload.username;
+      state.name = action.payload.name;
       state.userId = action.payload.userId;
+      state.username = action.payload.username;
     },
     fetchRejected: (state) => {
       state.status = "failure";
     },
-    login: (state, action: PayloadAction<IProps>) => {
+    login: (
+      state,
+      action: PayloadAction<{ name: string; userId: string; username: string }>
+    ) => {
       state.isAuth = true;
-      state.name = action.payload.username;
+      state.name = action.payload.name;
+      state.username = action.payload.username;
       state.userId = action.payload.userId;
     },
     logout: (state) => {
       state.isAuth = false;
       state.name = null;
       state.userId = null;
+      state.username = null;
     },
   },
 });

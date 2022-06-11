@@ -26,9 +26,10 @@ export default function App() {
           dispatch(fetchPending());
           const response = await axiosPrivate.get("/api/session");
 
-          const username = response.data.data.userName;
+          const name = response.data.data.userName;
           const userId = response.data.data.userId;
-          dispatch(fetchFulfilled({ username, userId }));
+          const username = response.data.data.userUsername;
+          dispatch(fetchFulfilled({ name, userId, username }));
         } catch (error) {
           dispatch(fetchRejected());
         }
