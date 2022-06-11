@@ -25,7 +25,12 @@ export default function Header() {
     <C.Header>
       <C.Container>
         <span>THE BLOG.</span>
+        <span>Discover</span>
+        <span>For you (only auth)</span>
         <div>Searchbar</div>
+        <div>Create post (blue bttn)</div>
+        <div>Notification</div>
+        <div>Profile</div>
         {isAuth ? (
           <div>
             <C.ButtonWrapper>
@@ -46,3 +51,6 @@ export default function Header() {
     </C.Header>
   );
 }
+
+//Header (logged in)
+//Profile, Notifications, Logout, NEW POST

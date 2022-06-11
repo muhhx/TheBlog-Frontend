@@ -27,3 +27,8 @@ export default function PostCard({ image, summary, title }: IProps) {
     </C.Container>
   );
 }
+
+//Created at
+//Image
+//Title
+//summary

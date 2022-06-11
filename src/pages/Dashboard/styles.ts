@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const PostsContainer = styled.div`
   width: 100%;
-  gap: 15px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;

@@ -47,7 +47,12 @@ export default function Login() {
       setDisplayPwd(false);
       setErr("");
       setLoading(false);
-      dispatch(login(response.data.userName));
+      dispatch(
+        login({
+          username: response.data.userName,
+          userId: response.data.userId,
+        })
+      );
       navigate("/private");
     } catch (error: any) {
       if (error?.response?.data?.message) {
