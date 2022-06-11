@@ -12,6 +12,7 @@ export default function useRefresh() {
       return response.data;
     } catch (error) {
       dispatch(logout());
+
       return error;
     }
   };

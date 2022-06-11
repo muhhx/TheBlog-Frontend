@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./app/store";
+
 import {
   fetchPending,
   fetchRejected,
   fetchFulfilled,
 } from "./features/auth/authSlice";
 import { fetchBackground } from "./features/background/backgroundSlice";
+import { fetchPosts } from "./features/posts/postsSlice";
 
-import Routing from "./routes/Routing";
+import Routing from "./Routing";
 import GlobalStyle from "./global";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
 
@@ -28,8 +30,9 @@ export default function App() {
           dispatch(fetchRejected());
         }
       };
-      dispatch(fetchBackground());
       getUser();
+      dispatch(fetchPosts());
+      dispatch(fetchBackground());
     }
   }, []);
 

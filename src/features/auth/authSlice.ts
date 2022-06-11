@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import BASE_URL from "../../config/axios";
 
 interface IAuth {
   isAuth: boolean;

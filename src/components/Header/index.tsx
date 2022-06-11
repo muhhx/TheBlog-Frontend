@@ -27,9 +27,11 @@ export default function Header() {
         <span>THE BLOG.</span>
         <div>Searchbar</div>
         {isAuth ? (
-          <C.ButtonWrapper>
-            <C.Button onClick={handleLogout}>Log Out</C.Button>
-          </C.ButtonWrapper>
+          <div>
+            <C.ButtonWrapper>
+              <C.Button onClick={handleLogout}>Log Out</C.Button>
+            </C.ButtonWrapper>
+          </div>
         ) : (
           <C.ButtonWrapper>
             <Link to="/login">

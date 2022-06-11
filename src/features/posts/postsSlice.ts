@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import postsService from "./postsService";
 
 export const fetchPosts = createAsyncThunk(
@@ -8,8 +9,7 @@ export const fetchPosts = createAsyncThunk(
       const data = await postsService.fetchPosts();
 
       return data;
-    } catch (error) {
-      //@ts-ignore
+    } catch (error: any) {
       const message = error.response.data.message;
       error instanceof Error && message
         ? thunkAPI.rejectWithValue(message)
@@ -54,6 +54,7 @@ const postsSlice = createSlice({
   },
 });
 
+export const selectPosts = (state: RootState) => state.posts;
 export default postsSlice.reducer;
 
 //Actions:

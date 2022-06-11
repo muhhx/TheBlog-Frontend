@@ -1,29 +1,32 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../app/store";
-import { useNavigate } from "react-router-dom";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectPosts } from "../../features/posts/postsSlice";
+
+import * as C from "./styles";
+import Spinner from "../../components/Spinner";
+import PostCard from "./PostCard";
 
 export default function Dashboard() {
-  const [data, setData] = useState("");
+  const { status, posts, error } = useSelector(selectPosts);
 
-  const userName = useSelector((state: RootState) => state.auth.name);
-  const axiosPrivate = useAxiosPrivate();
-
-  async function handleGetData() {
-    try {
-      const response = await axiosPrivate.get("/api/session");
-
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  console.log(posts);
   return (
-    <section>
-      <div>Dashboard do {userName}</div>
-      <button onClick={handleGetData}>Get data</button>
-    </section>
+    <>
+      {status === "idle" || status === "pending" ? (
+        <Spinner />
+      ) : status === "failure" ? (
+        <span>{error}</span>
+      ) : (
+        <C.PostsContainer>
+          {posts.map((post) => (
+            <PostCard
+              key={post._id}
+              image={post.image}
+              summary={post.summary}
+              title={post.title}
+            />
+          ))}
+        </C.PostsContainer>
+      )}
+    </>
   );
 }
