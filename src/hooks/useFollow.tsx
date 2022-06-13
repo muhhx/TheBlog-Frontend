@@ -16,11 +16,9 @@ export default function useFollow() {
       setLoading(true);
       const response = await axiosPrivate.post(`/api/follow/${id}`);
 
-      console.log(response);
       dispatch(followUser({ name, username, _id: id }));
       setSuccess(true);
     } catch (error) {
-      console.log(error);
       setError("Algo deu errado");
     } finally {
       setLoading(false);

@@ -15,11 +15,8 @@ export default function useFavorites() {
       const response = await axiosPrivate.get(
         `/api/user/${username}/favorites`
       );
-
-      console.log(response);
-      setFavorites(response.data);
+      setFavorites(response.data.data);
     } catch (error) {
-      console.log(error);
       setError("Algo deu errado");
     } finally {
       setLoading(false);

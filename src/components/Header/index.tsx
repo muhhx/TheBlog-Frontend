@@ -1,56 +1,51 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { RootState, AppDispatch } from "../../app/store";
-import { logout } from "../../features/auth/authSlice";
-import axiosPublic from "../../config/axios";
+import { selectAuthState } from "../../features/auth/authSlice";
+import useLogout from "../../hooks/useLogout";
+
 import * as C from "./styles";
+import Spinner from "../Spinner";
+
+const NOTI_ICON =
+  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2013/png/iconmonstr-bell-1.png&r=43&g=43&b=43";
 
 export default function Header() {
+  const [status, error, logout] = useLogout();
+  const auth = useSelector(selectAuthState);
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
-  const { isAuth, status, name } = useSelector(
-    (state: RootState) => state.auth
-  );
-
-  const handleLogout = async () => {
-    try {
-      const response = await axiosPublic.delete("/api/session");
-
-      dispatch(logout());
-      navigate("/");
-    } catch (error) {}
-  };
 
   return (
     <C.Header>
       <C.Container>
-        <span>THE BLOG.</span>
-        <span>Discover</span>
-        <span>For you (only auth)</span>
+        <C.Wrapper>
+          <span onClick={() => navigate("/")}>THE BLOG.</span>
+          <span>Discover</span>
+          <span>For you (only auth)</span>
+        </C.Wrapper>
         <div>Searchbar</div>
-        <div>Create post (blue bttn)</div>
-        <div>Notification</div>
-        <div>Profile</div>
-        {isAuth ? (
-          <div>
-            <C.ButtonWrapper>
-              <C.Button onClick={handleLogout}>Log Out</C.Button>
-            </C.ButtonWrapper>
-          </div>
+        {auth.isAuth ? (
+          <C.Wrapper>
+            <C.Icon image={NOTI_ICON} />
+            <C.Button onClick={() => navigate("/new")}>Criar Post</C.Button>
+            <C.LoginButton onClick={logout}>
+              Log Out {status === "loading" ? <Spinner /> : ""}
+            </C.LoginButton>
+            <C.Profile
+              image={auth.picture ? auth.picture : ""}
+              onClick={() => navigate(`/${auth.username}`)}
+            />
+          </C.Wrapper>
         ) : (
-          <C.ButtonWrapper>
+          <C.Wrapper>
             <Link to="/login">
               <C.LoginButton>Log In</C.LoginButton>
             </Link>
             <Link to="/register">
               <C.Button>Sign Up</C.Button>
             </Link>
-          </C.ButtonWrapper>
+          </C.Wrapper>
         )}
       </C.Container>
     </C.Header>
   );
 }
-
-//Header (logged in)
-//Profile, Notifications, Logout, NEW POST

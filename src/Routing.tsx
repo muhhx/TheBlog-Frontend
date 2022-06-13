@@ -4,10 +4,10 @@ import MainLayout from "./components/MainLayout/Layout";
 import SecondaryLayout from "./components/SecondaryLayout";
 import PrivateRoute from "./components/PrivateRoute";
 
-import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Editor from "./pages/Editor";
+import Create from "./pages/Create";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -22,7 +22,7 @@ export default function Routing() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/:id" element={<Profile />} />
+          <Route path="/user/:id" element={<Profile />} />
         </Route>
         <Route element={<SecondaryLayout />}>
           <Route path="/login" element={<Login />} />
@@ -35,8 +35,9 @@ export default function Routing() {
 
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/private" element={<Dashboard />} />
+            <Route path="/private" element={<div>Privado</div>} />
             <Route path="/editor" element={<Editor />} />
+            <Route path="/new" element={<Create />} />
           </Route>
         </Route>
       </Routes>

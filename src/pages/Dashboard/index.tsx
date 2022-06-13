@@ -8,7 +8,6 @@ import PostCard from "./PostCard";
 export default function Dashboard() {
   const { status, posts, error } = useSelector(selectPosts);
 
-  console.log(posts);
   return (
     <>
       {status === "idle" || status === "pending" ? (

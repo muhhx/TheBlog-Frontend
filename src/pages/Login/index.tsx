@@ -41,6 +41,7 @@ export default function Login() {
         email,
         password: pwd,
       });
+      console.log(response);
 
       setEmail("");
       setPwd("");
@@ -52,6 +53,7 @@ export default function Login() {
           name: response.data.userName,
           userId: response.data.userId,
           username: response.data.userUsername,
+          picture: response.data.userPicture,
         })
       );
       navigate("/private");

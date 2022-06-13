@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { selectAuth } from "../../features/auth/authSlice";
+import { selectAuthState } from "../../features/auth/authSlice";
 import { selectUserAll, fetchAllUserData } from "../../features/user/userSlice";
 import { IPost } from "../../features/user/userTypes";
 
@@ -24,7 +24,7 @@ export default function Profile() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useSelector(selectAuth);
+  const auth = useSelector(selectAuthState);
   const user = useSelector(selectUserAll);
   const [fSuccess, fError, fLoading, follow] = useFollow();
   const [uSuccess, uError, uLoading, unfollow] = useUnfollow();
@@ -44,14 +44,16 @@ export default function Profile() {
     if (!auth.isAuth) return navigate("/login");
     if (user.isCurrentUser) return navigate("/editor");
     if (!user.isBeingFollowed && auth.username && auth.name)
-      return follow(user.profile._id, auth.username, auth.name); //Seguir
-    if (auth.userId) return unfollow(user.profile._id, auth.userId); //Deixar de seguir
+      return follow(user.profile._id, auth.username, auth.name);
+    if (auth.userId) return unfollow(user.profile._id, auth.userId);
   };
 
   return (
     <C.Container>
       {user.status === "idle" || user.status === "pending" ? (
-        <Spinner />
+        <C.Container>
+          <Spinner />
+        </C.Container>
       ) : user.status === "failure" ? (
         <div>{user.error}</div>
       ) : (
@@ -152,3 +154,5 @@ export default function Profile() {
     </C.Container>
   );
 }
+
+//O PENDING E ERROR DOS ESTADOS REDUX SAO EM RELAÇÃO A FETCHING THE DATA APENAS! PARA FAZER QUALQUER OUTRA FUNÇÃO NA API, FAZER DENTRO DO COMPONENTE

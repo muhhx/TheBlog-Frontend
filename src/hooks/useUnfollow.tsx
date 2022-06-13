@@ -16,11 +16,9 @@ export default function useUnfollow() {
       setLoading(true);
       const response = await axiosPrivate.delete(`/api/follow/${id}`);
 
-      console.log(response);
       dispatch(unfollowUser({ userId }));
       setSuccess(true);
     } catch (error) {
-      console.log(error);
       setError("Algo deu errado");
     } finally {
       setLoading(false);

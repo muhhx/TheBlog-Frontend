@@ -8,6 +8,7 @@ interface IProps {
 
 export const Container = styled.div`
   width: 100%;
+  min-height: 90vh;
   display: flex;
   gap: 30px;
   margin: 50px 0px;
