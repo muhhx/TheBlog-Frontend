@@ -6,6 +6,12 @@ export const fetchSession = async () => {
   return response.data.data;
 };
 
+export const loginSession = async (email: string, password: string) => {
+  const response = await axiosPublic.post("/api/session", { email, password });
+
+  return response.data;
+};
+
 export const logoutSession = async () => {
   const response = await axiosPublic.delete("/api/session");
 
@@ -14,6 +20,7 @@ export const logoutSession = async () => {
 
 const authServices = {
   fetchSession,
+  loginSession,
   logoutSession,
 };
 

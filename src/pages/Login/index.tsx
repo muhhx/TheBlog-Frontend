@@ -1,74 +1,31 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "../../app/store";
-import axiosPublic from "../../config/axios";
-import { login } from "../../features/auth/authSlice";
-import Spinner from "../../components/Spinner";
+import useLogin from "../../hooks/useLogin";
+
 import * as C from "./styles";
+import Spinner from "../../components/Spinner";
 
 const SHOW_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-eye-8.png&r=116&g=116&b=116";
 
 export default function Login() {
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
+  const [status, error, setError, login] = useLogin();
 
   const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-
-  const [displayPwd, setDisplayPwd] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState("");
+  const [password, setPassword] = useState("");
+  const [displayPassword, setDisplayPassword] = useState(false);
 
   useEffect(() => {
-    setErr("");
-  }, [email, pwd]);
+    setError("");
+  }, [email, password]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    if (!email || !pwd) return setErr("Preencha todos os campos.");
 
-    if (isAuth) {
-      setErr("Você já está logado, faça o logout para acessar outra conta.");
-      return setLoading(false);
-    }
-
-    try {
-      const response = await axiosPublic.post("/api/session", {
-        email,
-        password: pwd,
-      });
-      console.log(response);
-
-      setEmail("");
-      setPwd("");
-      setDisplayPwd(false);
-      setErr("");
-      setLoading(false);
-      dispatch(
-        login({
-          name: response.data.userName,
-          userId: response.data.userId,
-          username: response.data.userUsername,
-          picture: response.data.userPicture,
-        })
-      );
-      navigate("/private");
-    } catch (error: any) {
-      if (error?.response?.data?.message) {
-        setErr(error.response.data.message);
-      } else {
-        setErr("Algo deu errado ao fazer o login");
-      }
-      setLoading(false);
-    }
+    login(email, password);
   };
 
   return (
-    <C.Form onSubmit={handleSubmit}>
+    <C.Form onSubmit={handleLogin}>
       <p>THE BLOG.</p>
       <C.HeaderWrapper>
         <C.Header>Iniciar Sessão</C.Header>
@@ -76,7 +33,7 @@ export default function Login() {
           Você não possui uma conta?
           <C.NavLink to="/register"> Registrar.</C.NavLink>
         </C.Span>
-        {err ? <C.Error>{err}</C.Error> : ""}
+        {error ? <C.Error>{error}</C.Error> : ""}
       </C.HeaderWrapper>
       <C.InputWrapper>
         <C.InputContainer>
@@ -93,23 +50,25 @@ export default function Login() {
         <C.InputContainer>
           <C.Label htmlFor="pwd">Password</C.Label>
           <C.Input
-            type={!displayPwd ? "password" : "text"}
+            type={!displayPassword ? "password" : "text"}
             id="pwd"
             autoComplete="off"
             required
-            onChange={(e) => setPwd(e.target.value)}
-            value={pwd}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
           <C.ShowPwd
-            onClick={() => setDisplayPwd(!displayPwd ? true : false)}
+            onClick={() => setDisplayPassword(!displayPassword ? true : false)}
             backgroundUrl={SHOW_ICON}
           />
         </C.InputContainer>
       </C.InputWrapper>
       <C.ButtonContainer>
-        <C.Button disabled={!email || !pwd || loading ? true : false}>
+        <C.Button
+          disabled={!email || !password || status === "loading" ? true : false}
+        >
           Fazer Login
-          {loading ? <Spinner /> : ""}
+          {status === "loading" ? <Spinner /> : ""}
         </C.Button>
       </C.ButtonContainer>
       <C.ShortContainer>
