@@ -13,6 +13,7 @@ const initialState: IUser = {
     username: "",
   },
   posts: [],
+  favorites: null,
   following: [],
   followingCount: 0,
   followers: [],
@@ -25,7 +26,10 @@ const initialState: IUser = {
 
 export const fetchAllUserData = createAsyncThunk(
   "user/fetchAllUserData",
-  async (payload: { username: string; userId: string | undefined | null }) => {
+  async (
+    payload: { username: string; userId: string | undefined | null },
+    thunkAPI
+  ) => {
     try {
       const profile = await userServices.fetchUserInfo(payload.username);
       const posts = await userServices.fetchUserPosts(payload.username);
@@ -40,17 +44,79 @@ export const fetchAllUserData = createAsyncThunk(
       );
       const isBeingFollowed = result ? true : false;
 
+      let favorites = null;
+      if (isCurrentUser) {
+        favorites = await userServices.fetchUserFavorites(payload.username);
+      }
+
       return {
         profile,
         posts,
+        favorites,
         following,
         followers,
         isCurrentUser,
         isBeingFollowed,
       };
     } catch (error: any) {
-      if (error.response.data.message) return error.response.data.message;
-      else return "Oops, não foi possível coletar os dados desse usuário.";
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      else
+        return thunkAPI.rejectWithValue(
+          "Oops, não foi possível coletar os dados desse usuário."
+        );
+    }
+  }
+);
+
+export const followUser = createAsyncThunk(
+  "user/followUser",
+  async (payload: { id: string }, thunkAPI) => {
+    try {
+      await userServices.followUser(payload.id);
+
+      const state: any = thunkAPI.getState();
+
+      const { userId, username, name } = state.auth;
+
+      return { success: true, userId, username, name };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível seguir o usuário.",
+        });
+    }
+  }
+);
+
+export const unfollowUser = createAsyncThunk(
+  "user/unfollowUser",
+  async (payload: { id: string }, thunkAPI) => {
+    try {
+      await userServices.unfollowUser(payload.id);
+
+      const state: any = thunkAPI.getState();
+
+      const { userId } = state.auth;
+
+      return { success: true, userId };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível deixar de seguir o usuário.",
+        });
     }
   }
 );
@@ -58,27 +124,7 @@ export const fetchAllUserData = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    followUser: (
-      state,
-      action: PayloadAction<{ name: string; username: string; _id: string }>
-    ) => {
-      state.followers.push({
-        name: action.payload.name,
-        username: action.payload.username,
-        _id: action.payload._id,
-      });
-      state.isBeingFollowed = true;
-      state.followersCount += 1;
-    },
-    unfollowUser: (state, action: PayloadAction<{ userId: string }>) => {
-      state.followers = state.followers.filter(
-        (follower) => follower._id !== action.payload.userId
-      );
-      state.isBeingFollowed = false;
-      state.followersCount -= 1;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllUserData.pending, (state) => {
@@ -92,18 +138,34 @@ const userSlice = createSlice({
         state.status = "success";
         state.profile = payload.profile.data;
         state.posts = payload.posts.data;
+        state.favorites = payload.favorites;
         state.followers = payload.followers.data;
         state.following = payload.following.data;
         state.isBeingFollowed = payload.isBeingFollowed;
         state.isCurrentUser = payload.isCurrentUser;
         state.followersCount = payload.followers.followersCount;
         state.followingCount = payload.following.followingCount;
+      })
+      .addCase(followUser.fulfilled, (state, { payload }) => {
+        state.followers.push({
+          _id: payload.userId,
+          name: payload.name,
+          username: payload.username,
+        });
+        state.isBeingFollowed = true;
+        state.followersCount += 1;
+      })
+      .addCase(unfollowUser.fulfilled, (state, { payload }) => {
+        state.followers = state.followers.filter(
+          (follower) => follower._id !== payload.userId
+        );
+        state.isBeingFollowed = false;
+        state.followersCount -= 1;
       });
   },
 });
 
 export const selectUserAll = (state: RootState) => state.user;
-export const { followUser, unfollowUser } = userSlice.actions;
 export default userSlice.reducer;
 
 //Dados do usuaro (preciso dos dados do following/followers em vários outros componentes, por exemplo)

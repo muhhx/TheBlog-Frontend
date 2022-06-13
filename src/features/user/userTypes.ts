@@ -26,6 +26,7 @@ export interface IUser {
     email: string;
   };
   posts: IPost[];
+  favorites: IPost[] | null;
   following: IFollower[];
   followingCount: number;
   followers: IFollower[];

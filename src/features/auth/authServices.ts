@@ -1,7 +1,7 @@
-import { axiosPrivateFetch, axiosPublic } from "../../config/axios";
+import { axiosPrivate, axiosPublic } from "../../config/axios";
 
 export const fetchSession = async () => {
-  const response = await axiosPrivateFetch.get("/api/session");
+  const response = await axiosPrivate.get("/api/session");
 
   return response.data.data;
 };
@@ -25,3 +25,5 @@ const authServices = {
 };
 
 export default authServices;
+
+//DELETE USER

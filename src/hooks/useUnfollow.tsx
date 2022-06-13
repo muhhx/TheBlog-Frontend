@@ -1,29 +1,28 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { unfollowUser } from "../features/user/userSlice";
-import useAxiosPrivate from "./useAxiosPrivate";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
 
-export default function useUnfollow() {
-  const dispatch = useDispatch();
-  const axiosPrivate = useAxiosPrivate();
+export default function useFollow() {
+  const dispatch: AppDispatch = useDispatch();
 
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "failure"
+  >("idle");
 
-  const unfollow = async (id: string, userId: string) => {
-    try {
-      setLoading(true);
-      const response = await axiosPrivate.delete(`/api/follow/${id}`);
+  const follow = async (id: string) => {
+    setStatus("loading");
 
-      dispatch(unfollowUser({ userId }));
-      setSuccess(true);
-    } catch (error) {
-      setError("Algo deu errado");
-    } finally {
-      setLoading(false);
+    const { payload }: any = await dispatch(unfollowUser({ id }));
+
+    if (!payload.success) {
+      setError(payload.message);
+      setStatus("failure");
+    } else {
+      setStatus("success");
     }
   };
 
-  return [success, error, loading, unfollow] as const;
+  return [status, error, follow] as const;
 }

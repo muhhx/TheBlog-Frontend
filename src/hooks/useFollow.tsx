@@ -1,29 +1,28 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { followUser } from "../features/user/userSlice";
-import useAxiosPrivate from "./useAxiosPrivate";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
 
 export default function useFollow() {
-  const dispatch = useDispatch();
-  const axiosPrivate = useAxiosPrivate();
+  const dispatch: AppDispatch = useDispatch();
 
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "failure"
+  >("idle");
 
-  const follow = async (id: string, username: string, name: string) => {
-    try {
-      setLoading(true);
-      const response = await axiosPrivate.post(`/api/follow/${id}`);
+  const follow = async (id: string) => {
+    setStatus("loading");
 
-      dispatch(followUser({ name, username, _id: id }));
-      setSuccess(true);
-    } catch (error) {
-      setError("Algo deu errado");
-    } finally {
-      setLoading(false);
+    const { payload }: any = await dispatch(followUser({ id }));
+
+    if (!payload.success) {
+      setError(payload.message);
+      setStatus("failure");
+    } else {
+      setStatus("success");
     }
   };
 
-  return [success, error, loading, follow] as const;
+  return [status, error, follow] as const;
 }

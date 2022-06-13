@@ -8,7 +8,6 @@ import { IPost } from "../../features/user/userTypes";
 
 import useFollow from "../../hooks/useFollow";
 import useUnfollow from "../../hooks/useUnfollow";
-import useFavorites from "../../hooks/useFavorites";
 
 import * as C from "./styles";
 import Spinner from "../../components/Spinner";
@@ -26,43 +25,51 @@ export default function Profile() {
 
   const auth = useSelector(selectAuthState);
   const user = useSelector(selectUserAll);
-  const [fSuccess, fError, fLoading, follow] = useFollow();
-  const [uSuccess, uError, uLoading, unfollow] = useUnfollow();
-  const [favorites, error, loading, getFavorites] = useFavorites();
+  const [followStatus, followError, follow] = useFollow();
+  const [unfollowStatus, unfollowError, unfollow] = useUnfollow();
 
   const [option, setOption] = useState(0);
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
+    setOption(0);
+  }, [user.profile._id]);
+
+  useEffect(() => {
     if (id && (auth.userId || auth.userId === null)) {
       dispatch(fetchAllUserData({ username: id, userId: auth.userId }));
-      if (user.isCurrentUser) getFavorites(id);
     }
   }, [id, auth.userId]);
 
   const handleButtonSubmit = async () => {
     if (!auth.isAuth) return navigate("/login");
     if (user.isCurrentUser) return navigate("/editor");
-    if (!user.isBeingFollowed && auth.username && auth.name)
-      return follow(user.profile._id, auth.username, auth.name);
-    if (auth.userId) return unfollow(user.profile._id, auth.userId);
+    if (!user.isBeingFollowed && user.profile._id)
+      return follow(user.profile._id);
+    if (user.profile._id) return unfollow(user.profile._id);
   };
 
   return (
-    <C.Container>
+    <>
       {user.status === "idle" || user.status === "pending" ? (
-        <C.Container>
+        <C.LoadingContainer>
           <Spinner />
-        </C.Container>
+        </C.LoadingContainer>
       ) : user.status === "failure" ? (
-        <div>{user.error}</div>
+        <C.LoadingContainer>
+          <div>{user.error}</div>
+        </C.LoadingContainer>
       ) : (
-        <>
+        <C.Container>
           <C.AsideWrapper>
             <C.Information>
               <C.ProfileHeader>
                 <C.Picture image={user.profile.picture} />
-                {fLoading || uLoading ? <Spinner /> : ""}
+                {followStatus === "loading" || unfollowStatus === "loading" ? (
+                  <Spinner />
+                ) : (
+                  ""
+                )}
                 <C.SpanWrapper>
                   <C.Name>{user.profile.name}</C.Name>
                   <C.Span>@{user.profile.username}</C.Span>
@@ -124,35 +131,29 @@ export default function Profile() {
               )}
             </C.OptionWrapper>
             <C.Posts>
-              {option === 0 ? (
-                user.posts.map((post: IPost, i) => (
-                  <PostCard
-                    key={i}
-                    image={post.image}
-                    summary={post.summary}
-                    title={post.title}
-                  />
-                ))
-              ) : loading ? (
-                <Spinner />
-              ) : error ? (
-                <C.Span>{error}</C.Span>
-              ) : (
-                favorites.map((post: IPost, i) => (
-                  <PostCard
-                    key={i}
-                    image={post.image}
-                    summary={post.summary}
-                    title={post.title}
-                  />
-                ))
-              )}
+              {option === 0
+                ? user.posts.map((post: IPost, i) => (
+                    <PostCard
+                      key={i}
+                      image={post.image}
+                      summary={post.summary}
+                      title={post.title}
+                    />
+                  ))
+                : !user.favorites
+                ? ""
+                : user.favorites.map((post: IPost, i) => (
+                    <PostCard
+                      key={i}
+                      image={post.image}
+                      summary={post.summary}
+                      title={post.title}
+                    />
+                  ))}
             </C.Posts>
           </C.MainWrapper>
-        </>
+        </C.Container>
       )}
-    </C.Container>
+    </>
   );
 }
-
-//O PENDING E ERROR DOS ESTADOS REDUX SAO EM RELAÇÃO A FETCHING THE DATA APENAS! PARA FAZER QUALQUER OUTRA FUNÇÃO NA API, FAZER DENTRO DO COMPONENTE

@@ -12,11 +12,6 @@ export const axiosPrivate = axios.create({
   baseURL: BASE_URL,
 });
 
-export const axiosPrivateFetch = axios.create({
-  withCredentials: true,
-  baseURL: BASE_URL,
-});
-
 const refresh = async () => {
   try {
     const response = await axiosPublic.put("/api/session");
@@ -27,7 +22,7 @@ const refresh = async () => {
   }
 };
 
-axiosPrivateFetch.interceptors.response.use(
+axiosPrivate.interceptors.response.use(
   (response) => response,
   async (error) => {
     const prevRequest = error.config;
@@ -37,7 +32,7 @@ axiosPrivateFetch.interceptors.response.use(
 
       if (!response) return Promise.reject(error);
 
-      return axiosPrivateFetch(prevRequest);
+      return axiosPrivate(prevRequest);
     }
     return Promise.reject(error);
   }

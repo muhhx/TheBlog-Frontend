@@ -32,7 +32,7 @@ export default function Header() {
             </C.LoginButton>
             <C.Profile
               image={auth.picture ? auth.picture : ""}
-              onClick={() => navigate(`/${auth.username}`)}
+              onClick={() => navigate(`/user/${auth.username}`)}
             />
           </C.Wrapper>
         ) : (

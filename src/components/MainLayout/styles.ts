@@ -10,4 +10,5 @@ export const Main = styled.main`
 export const Container = styled.div`
   width: 90%;
   max-width: 1280px;
+  min-height: 90vh;
 `;
