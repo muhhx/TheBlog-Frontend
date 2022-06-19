@@ -8,6 +8,7 @@ import { IPost } from "../../features/user/userTypes";
 
 import useFollow from "../../hooks/useFollow";
 import useUnfollow from "../../hooks/useUnfollow";
+import usePanel from "../../hooks/usePanel";
 
 import * as C from "./styles";
 import Spinner from "../../components/Spinner";
@@ -27,6 +28,7 @@ export default function Profile() {
   const user = useSelector(selectUserAll);
   const [followStatus, followError, follow] = useFollow();
   const [unfollowStatus, unfollowError, unfollow] = useUnfollow();
+  const { open } = usePanel();
 
   const [option, setOption] = useState(0);
   const [hover, setHover] = useState(false);
@@ -65,11 +67,6 @@ export default function Profile() {
             <C.Information>
               <C.ProfileHeader>
                 <C.Picture image={user.profile.picture} />
-                {followStatus === "loading" || unfollowStatus === "loading" ? (
-                  <Spinner />
-                ) : (
-                  ""
-                )}
                 <C.SpanWrapper>
                   <C.Name>{user.profile.name}</C.Name>
                   <C.Span>@{user.profile.username}</C.Span>
@@ -80,6 +77,7 @@ export default function Profile() {
                 <C.Button onClick={handleButtonSubmit}>
                   {user.isCurrentUser ? "Editar Perfil" : "Seguir"}
                   <C.Icon image={FOLLOW_ICON} />
+                  {followStatus === "loading" ? <Spinner /> : ""}
                 </C.Button>
               ) : (
                 <C.Unfollow
@@ -89,22 +87,33 @@ export default function Profile() {
                   onClick={handleButtonSubmit}
                 >
                   {hover ? "Deixar de seguir" : "Seguindo"}
+                  {unfollowStatus === "loading" ? <Spinner /> : ""}
                 </C.Unfollow>
               )}
               <C.DataWrapper>
                 <C.DataContainer>
-                  <span>Posts:</span>
+                  <span>Posts</span>
                   <span style={{ fontWeight: "600" }}>{user.posts.length}</span>
                 </C.DataContainer>
                 <C.DataContainer>
-                  <span style={{ cursor: "pointer" }}>Seguidores:</span>
-                  <span style={{ fontWeight: "600", cursor: "pointer" }}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => open("seguidores")}
+                  >
+                    Seguidores
+                  </span>
+                  <span style={{ fontWeight: "600" }}>
                     {user.followersCount}
                   </span>
                 </C.DataContainer>
                 <C.DataContainer>
-                  <span style={{ cursor: "pointer" }}>Seguindo:</span>
-                  <span style={{ fontWeight: "600", cursor: "pointer" }}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => open("seguindo")}
+                  >
+                    Seguindo
+                  </span>
+                  <span style={{ fontWeight: "600" }}>
                     {user.followingCount}
                   </span>
                 </C.DataContainer>
@@ -135,6 +144,8 @@ export default function Profile() {
                 ? user.posts.map((post: IPost, i) => (
                     <PostCard
                       key={i}
+                      id={post._id}
+                      authorId={post.authorId}
                       image={post.image}
                       summary={post.summary}
                       title={post.title}
@@ -145,6 +156,8 @@ export default function Profile() {
                 : user.favorites.map((post: IPost, i) => (
                     <PostCard
                       key={i}
+                      id={post._id}
+                      authorId={post.authorId}
                       image={post.image}
                       summary={post.summary}
                       title={post.title}

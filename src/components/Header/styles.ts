@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 interface IProps {
   image: string;
@@ -18,6 +19,10 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const ButtonLink = styled(Link)`
+  text-decoration: none;
 `;
 
 export const Button = styled.button`

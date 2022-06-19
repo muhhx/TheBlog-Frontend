@@ -15,29 +15,32 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import ValidateEmail from "./pages/ValidateEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Panel from "./components/PanelLayout";
 
 export default function Routing() {
   return (
     <Router>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/user/:id" element={<Profile />} />
-        </Route>
-        <Route element={<SecondaryLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/confirmemail" element={<ConfirmEmail />} />
-          <Route path="/confirmemail/:id" element={<ValidateEmail />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/forgotpassword/:id" element={<ResetPassword />} />
-        </Route>
-
-        <Route element={<PrivateRoute />}>
+        <Route element={<Panel />}>
           <Route element={<MainLayout />}>
-            <Route path="/private" element={<div>Privado</div>} />
-            <Route path="/editor" element={<Editor />} />
-            <Route path="/new" element={<Create />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/user/:id" element={<Profile />} />
+          </Route>
+          <Route element={<SecondaryLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/confirmemail" element={<ConfirmEmail />} />
+            <Route path="/confirmemail/:id" element={<ValidateEmail />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/forgotpassword/:id" element={<ResetPassword />} />
+          </Route>
+
+          <Route element={<PrivateRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/private" element={<div>Privado</div>} />
+              <Route path="/editor" element={<Editor />} />
+              <Route path="/new" element={<Create />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

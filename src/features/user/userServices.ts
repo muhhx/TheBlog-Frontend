@@ -42,6 +42,28 @@ const unfollowUser = async (id: string) => {
   return response;
 };
 
+const createPost = async (
+  title: string,
+  summaryInput: string,
+  image: string,
+  content: string
+) => {
+  const response = await axiosPrivate.post("/api/post", {
+    title,
+    summaryInput,
+    image,
+    content,
+  });
+
+  return response.data;
+};
+
+const deletePost = async (id: string) => {
+  const response = await axiosPrivate.delete(`/api/post/${id}`);
+
+  return response.data;
+};
+
 const userServices = {
   fetchUserInfo,
   fetchUserFollowing,
@@ -50,20 +72,22 @@ const userServices = {
   fetchUserFavorites,
   followUser,
   unfollowUser,
+  createPost,
+  deletePost,
 };
 
 export default userServices;
 
 //USER STATE:
 //Follow V
-//Unfollow
+//Unfollow V
 //UpdateUserInfo (username, etc) SO DAR OPCAO PRA MUDAR USERNAME!
-//RemoveFavorite
-//AddFavorite
-//CreatePost
+//CreatePost V
 //EditPost
-//DeletePost
+//DeletePost V
 
 //POST STATE:
 //Like post
 //Comment, etc
+//RemoveFavorite
+//AddFavorite

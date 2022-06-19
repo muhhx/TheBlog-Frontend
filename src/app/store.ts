@@ -3,13 +3,15 @@ import authReducer from "../features/auth/authSlice";
 import userReducer from "../features/user/userSlice";
 import backgroundReducer from "../features/background/backgroundSlice";
 import postsReducer from "../features/posts/postsSlice";
+import panelReducer from "../features/panel/panelSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
-    background: backgroundReducer,
     posts: postsReducer,
+    background: backgroundReducer,
+    panel: panelReducer,
   },
 });
 

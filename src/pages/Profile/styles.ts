@@ -197,6 +197,10 @@ export const Unfollow = styled.button`
   cursor: pointer;
   width: 100%;
   max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export const Icon = styled.div`

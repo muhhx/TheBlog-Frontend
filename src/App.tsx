@@ -11,6 +11,7 @@ import GlobalStyle from "./global";
 
 export default function App() {
   const auth = useSelector((state: RootState) => state.auth);
+  const panel = useSelector((state: RootState) => state.panel);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function App() {
 
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle displayPanel={panel.display} />
       <Routing />
     </>
   );

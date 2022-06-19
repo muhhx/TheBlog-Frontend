@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { selectAuthState } from "../../features/auth/authSlice";
 import useLogout from "../../hooks/useLogout";
 
@@ -26,7 +26,7 @@ export default function Header() {
         {auth.isAuth ? (
           <C.Wrapper>
             <C.Icon image={NOTI_ICON} />
-            <C.Button onClick={() => navigate("/new")}>Criar Post</C.Button>
+            <C.Button onClick={() => navigate("/new")}>Novo Post</C.Button>
             <C.LoginButton onClick={logout}>
               Log Out {status === "loading" ? <Spinner /> : ""}
             </C.LoginButton>
@@ -37,12 +37,12 @@ export default function Header() {
           </C.Wrapper>
         ) : (
           <C.Wrapper>
-            <Link to="/login">
+            <C.ButtonLink to="/login">
               <C.LoginButton>Log In</C.LoginButton>
-            </Link>
-            <Link to="/register">
+            </C.ButtonLink>
+            <C.ButtonLink to="/register">
               <C.Button>Sign Up</C.Button>
-            </Link>
+            </C.ButtonLink>
           </C.Wrapper>
         )}
       </C.Container>

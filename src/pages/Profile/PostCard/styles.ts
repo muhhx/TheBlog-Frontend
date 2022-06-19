@@ -14,6 +14,7 @@ export const Container = styled.div`
 export const Image = styled.div`
   width: 100%;
   min-height: 150px;
+  background-color: white;
   background-image: url(${(props: IProps) => props.image});
   background-position: center;
   background-size: cover;
@@ -95,4 +96,32 @@ export const Information = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+`;
+
+export const EditWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 25px;
+`;
+
+export const IconContainer = styled.div`
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: 100px;
+  background-color: #c9c9c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  background-image: url(${(props: IProps) => props.image});
+  background-position: center;
+  background-size: 50% auto;
+  background-repeat: no-repeat;
+
+  &:hover {
+    background-color: #cc1b1b;
+  }
 `;

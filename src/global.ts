@@ -1,5 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
+interface IProps {
+  displayPanel: boolean;
+}
+
 export const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -10,6 +14,11 @@ export const GlobalStyle = createGlobalStyle`
     html {
         font-size: 14px;
         font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        overflow: ${(props: IProps) =>
+          !props.displayPanel ? "initial" : "hidden"};
     }
     
 `;

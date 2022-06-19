@@ -121,6 +121,63 @@ export const unfollowUser = createAsyncThunk(
   }
 );
 
+export const createPost = createAsyncThunk(
+  "user/createPost",
+  async (
+    payload: {
+      title: string;
+      summaryInput: string;
+      content: string;
+      image: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const { data } = await userServices.createPost(
+        payload.title,
+        payload.summaryInput,
+        payload.image,
+        payload.content
+      );
+
+      return { success: true, message: "Post criado com sucesso", data };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível criar o post.",
+        });
+    }
+  }
+);
+
+export const deletePost = createAsyncThunk(
+  "user/deletePost",
+  async (payload: { id: string }, thunkAPI) => {
+    try {
+      const { postId } = await userServices.deletePost(payload.id);
+
+      return { success: true, postId };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível deletar o post.",
+        });
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -161,11 +218,16 @@ const userSlice = createSlice({
         );
         state.isBeingFollowed = false;
         state.followersCount -= 1;
+      })
+      .addCase(deletePost.fulfilled, (state, { payload }) => {
+        state.posts = state.posts.filter((post) => post._id !== payload.postId);
       });
   },
 });
 
 export const selectUserAll = (state: RootState) => state.user;
+export const selectUserFollowers = (state: RootState) => state.user.followers;
+export const selectUserFollowing = (state: RootState) => state.user.following;
 export default userSlice.reducer;
 
 //Dados do usuaro (preciso dos dados do following/followers em vários outros componentes, por exemplo)
