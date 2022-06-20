@@ -27,7 +27,7 @@ export default function Create({
   const { close } = usePanel();
   const [status, error, create] = useCreatePost();
 
-  const [summary, setSummary] = useState("Resumo...");
+  const [summary, setSummary] = useState("");
   const [validSummary, setValidSummary] = useState(false);
   const [image, setImage] = useState("");
   const [validImage, setValidImage] = useState(false);
@@ -56,12 +56,6 @@ export default function Create({
 
         {error ? <C.ApiError>{error}</C.ApiError> : ""}
 
-        <C.Wrapper>
-          <C.Header>{title}</C.Header>
-          <C.Subtitle>{summary}</C.Subtitle>
-          <C.ImagePreview backgroundUrl={image} id="preview" />
-        </C.Wrapper>
-
         <C.InputContainer>
           <C.Label htmlFor="image">Image Link</C.Label>
           <C.InputHolder>
@@ -71,8 +65,12 @@ export default function Create({
               autoComplete="off"
               value={image}
               onChange={(e) => setImage(e.target.value)}
+              maxLength={140}
             />
+            {!validImage && image ? <C.Icon backgroundUrl={ERR_ICON} /> : ""}
+            {validImage ? <C.Icon backgroundUrl={OK_ICON} /> : ""}
           </C.InputHolder>
+          {validImage || !image ? "" : <C.Error>Imagem inválida.</C.Error>}
         </C.InputContainer>
 
         <C.InputContainer>
@@ -95,6 +93,14 @@ export default function Create({
           </C.InputHolder>
           {validSummary || !summary ? "" : <C.Error>Summary inválido.</C.Error>}
         </C.InputContainer>
+
+        <C.Wrapper>
+          <C.Label>Preview</C.Label>
+          <C.Header>{title}</C.Header>
+          <C.Subtitle>{summary}</C.Subtitle>
+          <C.ImagePreview backgroundUrl={image} id="preview" />
+        </C.Wrapper>
+
         <C.ButtonContainer>
           <C.Button
             disabled={

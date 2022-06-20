@@ -13,6 +13,7 @@ export interface IPost {
 export interface IFollower {
   name: string;
   username: string;
+  picture: string;
   _id: string;
 }
 

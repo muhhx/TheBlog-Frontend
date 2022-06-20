@@ -1,31 +1,61 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { selectAuthState } from "../../features/auth/authSlice";
 import useLogout from "../../hooks/useLogout";
+import usePanel from "../../hooks/usePanel";
 
 import * as C from "./styles";
 import Spinner from "../Spinner";
 
-const NOTI_ICON =
-  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2013/png/iconmonstr-bell-1.png&r=43&g=43&b=43";
+const MENU_ICON =
+  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.3.0/png/iconmonstr-menu-lined.png&r=50&g=50&b=50";
 
 export default function Header() {
-  const [status, error, logout] = useLogout();
+  const { pathname } = useLocation();
   const auth = useSelector(selectAuthState);
   const navigate = useNavigate();
+  const { open } = usePanel();
+  const [status, error, logout] = useLogout();
+  const [currentPage, setCurrentPage] = useState<
+    null | "discover" | "foryou" | "search"
+  >(null);
+
+  useEffect(() => {
+    if (pathname === "/") setCurrentPage("discover");
+    else if (pathname === "/foryou") setCurrentPage("foryou");
+    else if (pathname.includes("search")) setCurrentPage("search");
+    else setCurrentPage(null);
+  }, [pathname]);
 
   return (
     <C.Header>
       <C.Container>
         <C.Wrapper>
-          <span onClick={() => navigate("/")}>THE BLOG.</span>
-          <span>Discover</span>
-          <span>For you (only auth)</span>
+          <C.Hamburger image={MENU_ICON} onClick={() => open("menu")} />
+          <C.PageNavigation
+            onClick={() => navigate("/")}
+            isSelected={currentPage === "discover" ? true : false}
+          >
+            Discover
+          </C.PageNavigation>
+          {auth.isAuth && (
+            <C.PageNavigation
+              onClick={() => navigate("/foryou")}
+              isSelected={currentPage === "foryou" ? true : false}
+            >
+              For You
+            </C.PageNavigation>
+          )}
+          <C.PageNavigation
+            onClick={() => navigate("/search")}
+            isSelected={currentPage === "search" ? true : false}
+          >
+            Search
+          </C.PageNavigation>
         </C.Wrapper>
-        <div>Searchbar</div>
         {auth.isAuth ? (
           <C.Wrapper>
-            <C.Icon image={NOTI_ICON} />
             <C.Button onClick={() => navigate("/new")}>Novo Post</C.Button>
             <C.LoginButton onClick={logout}>
               Log Out {status === "loading" ? <Spinner /> : ""}

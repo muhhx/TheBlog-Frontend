@@ -85,8 +85,8 @@ export const Icon = styled.div`
 
 export const ImagePreview = styled.div`
   width: 100%;
-  height: 200px;
-  background-color: #d3d3d3;
+  height: 350px;
+  background-color: #f8f8f8;
   background-image: url(${(props: IProps) => props.backgroundUrl});
   background-position: center;
   background-size: cover;

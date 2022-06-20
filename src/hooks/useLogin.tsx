@@ -24,7 +24,7 @@ export default function useLogin() {
       setStatus("failure");
     } else {
       setStatus("success");
-      navigate("/private");
+      navigate("/foryou");
     }
   };
 

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 interface IProps {
   backgroundUrl?: string;
@@ -6,25 +7,30 @@ interface IProps {
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   background-color: white;
   border-radius: 5px;
   display: flex;
   justify-content: center;
+  padding: 40px 56px;
 
   @media only screen and (max-width: 530px) {
     height: 100vh;
     border-radius: 0px;
+    padding: 30px 0px;
   }
 `;
 
 export const Form = styled.div`
-  width: 90%;
-  padding: 40px 0px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+
+  @media only screen and (max-width: 530px) {
+    width: 90%;
+  }
 `;
 
 export const CloseContainer = styled.div`
@@ -109,4 +115,11 @@ export const Error = styled.div`
   display: flex;
   justify-content: center;
   text-align: center;
+`;
+
+export const NavLink = styled(Link)`
+  color: #1473e6;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 14px;
 `;

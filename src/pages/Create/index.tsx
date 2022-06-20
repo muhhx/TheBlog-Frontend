@@ -31,7 +31,7 @@ export default function Create() {
     <C.Form onSubmit={handleSubmit}>
       <C.ButtonContainer>
         <C.Button disabled={!validTitle || !validContent ? true : false}>
-          Criar post
+          Criar Post
         </C.Button>
         <C.OptionWrapper>
           <C.Option
@@ -58,10 +58,22 @@ export default function Create() {
         </C.OptionWrapper>
       </C.ButtonContainer>
 
-      {/* <div>Aviso markdown</div> */}
+      <C.SpanHeader>
+        <strong>Aviso:</strong>
+        <ul style={{ marginLeft: "18px" }}>
+          <li>
+            Nós utilizamos Markdown para criar o conteúdo do post. Escreva seu
+            markdown na aba "Editor", e veja o resultado na aba "Preview". A aba
+            "Real Time" possibilita você ver as duas abas ao mesmo tempo.
+          </li>
+          <li>
+            Após terminar o seu post, clique no botão "Criar Post", em azul.
+          </li>
+        </ul>
+      </C.SpanHeader>
 
       <C.InputContainer>
-        {/* <C.Label htmlFor="title">Título</C.Label> */}
+        <C.Label htmlFor="title">Título</C.Label>
         <C.Input
           type="text"
           id="title"
@@ -69,17 +81,15 @@ export default function Create() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           maxLength={100}
-          placeholder="Título..."
         />
       </C.InputContainer>
 
       <C.ContentContainer>
-        {/* <C.Label htmlFor="content">Conteúdo</C.Label> */}
+        <C.Label htmlFor="content">Conteúdo</C.Label>
         <C.Wrapper>
           <C.Editor
             onChange={(e) => setContent(e.target.value)}
             show={display === "preview" ? false : true}
-            placeholder="Conte sua história..."
           />
           <C.Preview show={display === "editor" ? false : true}>
             <ReactMarkdown children={content} />

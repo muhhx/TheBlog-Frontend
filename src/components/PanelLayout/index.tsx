@@ -4,8 +4,11 @@ import { useSelector } from "react-redux";
 import { selectPanelState } from "../../features/panel/panelSlice";
 import usePanel from "../../hooks/usePanel";
 
+import Menu from "./Menu";
 import Create from "./Create";
 import DeletePost from "./DeletePost";
+import Followers from "./Followers";
+import Following from "./Following";
 import * as C from "./styles";
 
 export default function PanelLayout() {
@@ -22,8 +25,9 @@ export default function PanelLayout() {
       {display && (
         <C.PanelContainer>
           <C.Panel>
-            {category === "seguidores" && <div>Seguidores</div>}
-            {category === "seguindo" && <div>Seguindo</div>}
+            {category === "menu" && <Menu />}
+            {category === "seguidores" && <Followers />}
+            {category === "seguindo" && <Following />}
             {category === "create" &&
               payload !== null &&
               typeof payload !== "string" && (

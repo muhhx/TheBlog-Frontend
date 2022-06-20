@@ -25,6 +25,7 @@ export default function Routing() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/user/:id" element={<Profile />} />
+            <Route path="/search" element={<div>Search</div>} />
           </Route>
           <Route element={<SecondaryLayout />}>
             <Route path="/login" element={<Login />} />
@@ -37,7 +38,7 @@ export default function Routing() {
 
           <Route element={<PrivateRoute />}>
             <Route element={<MainLayout />}>
-              <Route path="/private" element={<div>Privado</div>} />
+              <Route path="/foryou" element={<div>For you</div>} />
               <Route path="/editor" element={<Editor />} />
               <Route path="/new" element={<Create />} />
             </Route>

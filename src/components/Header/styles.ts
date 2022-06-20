@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 interface IProps {
-  image: string;
+  image?: string;
+  isSelected?: boolean;
 }
 
 export const Header = styled.header`
@@ -47,6 +48,10 @@ export const Button = styled.button`
   &:hover:enabled {
     background-color: #003ecb;
   }
+
+  @media only screen and (max-width: 530px) {
+    display: none;
+  }
 `;
 
 export const LoginButton = styled.button`
@@ -73,6 +78,10 @@ export const LoginButton = styled.button`
   &:hover:enabled {
     background-color: #f1f1f1;
     border-color: #e8e8e8;
+  }
+
+  @media only screen and (max-width: 530px) {
+    display: none;
   }
 `;
 
@@ -101,4 +110,34 @@ export const Icon = styled.div`
   background-position: center;
   background-size: cover;
   cursor: pointer;
+`;
+
+export const PageNavigation = styled.button`
+  height: 100%;
+  border: none;
+  border-bottom: ${(props: IProps) =>
+    props.isSelected ? "solid 2px #323232" : "none"};
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  color: #323232;
+  font-weight: ${(props: IProps) => (props.isSelected ? "500" : "inherit")};
+  padding-top: ${(props: IProps) => (props.isSelected ? "2px" : "none")};
+  cursor: pointer;
+
+  @media only screen and (max-width: 530px) {
+    display: none;
+  }
+`;
+
+export const Hamburger = styled.div`
+  width: 21px;
+  aspect-ratio: 1;
+  background-image: url(${(props: IProps) => props.image});
+  background-position: center;
+  background-size: cover;
+
+  @media only screen and (min-width: 530px) {
+    display: none;
+  }
 `;

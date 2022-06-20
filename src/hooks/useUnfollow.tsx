@@ -3,7 +3,7 @@ import { unfollowUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 
-export default function useFollow() {
+export default function useUnfollow() {
   const dispatch: AppDispatch = useDispatch();
 
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ export default function useFollow() {
     "idle" | "loading" | "success" | "failure"
   >("idle");
 
-  const follow = async (id: string) => {
+  const unfollow = async (id: string) => {
     setStatus("loading");
 
     const { payload }: any = await dispatch(unfollowUser({ id }));
@@ -24,5 +24,5 @@ export default function useFollow() {
     }
   };
 
-  return [status, error, follow] as const;
+  return [status, error, unfollow] as const;
 }

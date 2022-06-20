@@ -77,9 +77,9 @@ export const followUser = createAsyncThunk(
 
       const state: any = thunkAPI.getState();
 
-      const { userId, username, name } = state.auth;
+      const { userId, username, name, picture } = state.auth;
 
-      return { success: true, userId, username, name };
+      return { success: true, userId, username, name, picture };
     } catch (error: any) {
       if (error.response.data.message)
         return thunkAPI.rejectWithValue({
@@ -208,6 +208,7 @@ const userSlice = createSlice({
           _id: payload.userId,
           name: payload.name,
           username: payload.username,
+          picture: payload.picture,
         });
         state.isBeingFollowed = true;
         state.followersCount += 1;

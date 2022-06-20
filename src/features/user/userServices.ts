@@ -91,3 +91,23 @@ export default userServices;
 //Comment, etc
 //RemoveFavorite
 //AddFavorite
+
+/**
+ * Editar info do usuario + deletar usuario
+ * Editar post
+ * Ver seguidores no perfil (quando clica em Followers/Following)
+ * Remover favoritos do perfil
+ *
+ * Coisas relacionadas a post
+ * Pagina do post
+ * Add/Deletar favorito
+ * Like
+ * Comentar
+ *
+ * Coisas relacionadas a home page e pesquisa
+ * TAGS!
+ * Algoritmo
+ * Notificações!
+ *
+ * MODULARIZAR E COMPONENTIZAR (MELHORAR O CODIGO)
+ */

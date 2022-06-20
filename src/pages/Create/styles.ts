@@ -20,7 +20,9 @@ export const Wrapper = styled.div`
   width: 100%;
   display: flex;
   gap: 50px;
-  //Media query 530px
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const Header = styled.h1`
@@ -64,6 +66,10 @@ export const OptionWrapper = styled.div`
   display: flex;
   justify-content: start;
   gap: 10px;
+
+  @media only screen and (max-width: 530px) {
+    flex-direction: column;
+  }
 `;
 
 export const Option = styled.div`
@@ -73,6 +79,7 @@ export const Option = styled.div`
   border-radius: 100px;
   min-height: 32px;
   padding: 5px 20px;
+  min-width: 110px;
   cursor: pointer;
   font-family: inherit;
   color: ${(props: IProps) => (props.selected === true ? "white" : "#191919")};
@@ -125,6 +132,11 @@ export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+
+  @media only screen and (max-width: 530px) {
+    flex-direction: column;
+  }
 `;
 
 export const Button = styled.button`
@@ -138,9 +150,6 @@ export const Button = styled.button`
   font-weight: 600;
   padding: 5px 20px;
   text-align: center;
-  display: flex;
-  gap: 10px;
-  align-items: center;
   cursor: pointer;
 
   &:disabled {
@@ -152,4 +161,21 @@ export const Button = styled.button`
   &:hover:enabled {
     background-color: #0d66d0;
   }
+
+  @media only screen and (max-width: 530px) {
+    width: 100%;
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+`;
+
+export const SpanHeader = styled.div`
+  font-size: 12px;
+  color: #323232;
 `;

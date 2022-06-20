@@ -23,8 +23,11 @@ export default function DeletePost({ id }: { id: string }) {
           <C.Close backgroundUrl={CLOSE_ICON} onClick={close} />
         </C.CloseContainer>
         <C.Wrapper>
-          <C.Header>Deletar Post</C.Header>
-          <C.Span>Você tem certeza que deseja deletar este post?</C.Span>
+          <C.Header>Deletar</C.Header>
+          <C.Span>
+            Tem certeza que deseja deletar este post?{" "}
+            <C.NavLink to="/">Voltar.</C.NavLink>
+          </C.Span>
           {error ? <C.Error>{error}</C.Error> : ""}
         </C.Wrapper>
         <C.Button
