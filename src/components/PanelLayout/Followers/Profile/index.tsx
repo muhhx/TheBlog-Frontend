@@ -1,23 +1,28 @@
-import useUnfollow from "../../../../hooks/useUnfollow";
 import { IFollower } from "../../../../features/user/userTypes";
+import { useSelector } from "react-redux";
+import { selectAuthState } from "../../../../features/auth/authSlice";
 import * as C from "./styles";
-import Spinner from "../../../Spinner";
 
 export default function Profile({ userInfo }: { userInfo: IFollower }) {
-  const [status, error, unfollow] = useUnfollow();
+  const { userId } = useSelector(selectAuthState);
 
   return (
     <C.Container>
       <C.Picture image={userInfo.picture} />
       <C.Information>
-        <C.Name>{userInfo.name}</C.Name>
+        <C.Name>
+          <C.NavLink to={`/user/${userInfo.username}`}>
+            {userInfo.name}
+          </C.NavLink>
+        </C.Name>
         <C.Username>{userInfo.username}</C.Username>
-        {/* <C.Unfollow
-          disabled={status === "loading" ? true : false}
-          onClick={() => unfollow(userInfo._id)}
-        >
-          {status === "loading" && <Spinner />}
-        </C.Unfollow> */}
+        {userId !== userInfo._id && (
+          <C.Button>
+            <C.NavLink to={`/user/${userInfo.username}`}>
+              Ir para perfil
+            </C.NavLink>
+          </C.Button>
+        )}
       </C.Information>
     </C.Container>
   );

@@ -18,15 +18,16 @@ export const fetchAuth = createAsyncThunk(
 
       return { name, username, picture, userId };
     } catch (error: any) {
-      //Handle error
-
-      //Handle sessão expirada (n vou ter que handle esse especificamente aqui)
-      if (error.response.status === 403) {
-        console.log("Here");
-        thunkAPI.dispatch(logout());
-      }
-
-      return thunkAPI.rejectWithValue("Nenhuma sessão encontrada");
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível autenticar.",
+        });
     }
   }
 );

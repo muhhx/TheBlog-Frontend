@@ -16,7 +16,7 @@ export default function Following() {
     <C.Container>
       <C.Wrapper>
         <C.CloseContainer>
-          <C.Header>Seguidores</C.Header>
+          <C.Header>Seguindo</C.Header>
           <C.Close image={CLOSE_ICON} onClick={close} />
         </C.CloseContainer>
         <C.FollowingContainer>

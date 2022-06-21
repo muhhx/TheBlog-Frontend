@@ -62,6 +62,7 @@ export const FollowersContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   overflow-y: scroll;
+  padding-right: 10px;
   gap: 10px;
 
   @media only screen and (max-width: 530px) {

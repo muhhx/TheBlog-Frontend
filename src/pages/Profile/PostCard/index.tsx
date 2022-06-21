@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectAuthState } from "../../../features/auth/authSlice";
 import usePanel from "../../../hooks/usePanel";
+import { Link } from "react-router-dom";
 
 import * as C from "./styles";
 import arrow from "../../../assets/arrow.png";
@@ -16,6 +17,7 @@ interface IProps {
   image: string;
   summary: string;
   title: string;
+  slug: string;
 }
 
 export default function PostCard({
@@ -24,6 +26,7 @@ export default function PostCard({
   image,
   summary,
   title,
+  slug,
 }: IProps) {
   const { open } = usePanel();
   const { isAuth, userId } = useSelector(selectAuthState);
@@ -49,7 +52,9 @@ export default function PostCard({
           <C.Summary>{summary}</C.Summary>
         </C.Information>
         <C.Button>
-          <C.ButtonSpan>Ler</C.ButtonSpan>
+          <C.ButtonSpan>
+            <Link to={`/post/${slug}`}>Ler</Link>
+          </C.ButtonSpan>
           <C.ButtonArrow image={arrow} />
         </C.Button>
       </C.Wrapper>

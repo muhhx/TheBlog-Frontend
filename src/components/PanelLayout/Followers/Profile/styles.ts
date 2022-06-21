@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 interface IProps {
   image: string;
@@ -59,8 +60,7 @@ export const Username = styled.p`
   text-overflow: ellipsis;
 `;
 
-export const Unfollow = styled.button`
-  background-color: #e8e8e8;
+export const Button = styled.button`
   border: none;
   border-radius: 100px;
   min-width: 110px;
@@ -77,18 +77,14 @@ export const Unfollow = styled.button`
   position: absolute;
   right: 0;
   top: 5px;
+  background-color: #0057ff;
 
   &:hover {
-    background-color: #cc1b1b;
+    background-color: #003ecb;
   }
+`;
 
-  &:after {
-    visibility: visible;
-    content: "Seguindo";
-  }
-
-  &:hover::after {
-    visibility: visible;
-    content: "Unfollow";
-  }
+export const NavLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
 `;

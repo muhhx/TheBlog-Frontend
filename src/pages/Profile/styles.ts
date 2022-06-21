@@ -210,3 +210,11 @@ export const Icon = styled.div`
   background-position: center;
   background-size: cover;
 `;
+
+export const SpanButton = styled.span`
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;

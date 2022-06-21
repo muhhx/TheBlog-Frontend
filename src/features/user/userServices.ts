@@ -93,10 +93,9 @@ export default userServices;
 //AddFavorite
 
 /**
- * Editar info do usuario + deletar usuario
+ * Editar info do usuario
+ * Deletar usuario (deletar tudo, inclusive following/followers, posts, etc)
  * Editar post
- * Ver seguidores no perfil (quando clica em Followers/Following)
- * Remover favoritos do perfil
  *
  * Coisas relacionadas a post
  * Pagina do post
@@ -110,4 +109,5 @@ export default userServices;
  * Notificações!
  *
  * MODULARIZAR E COMPONENTIZAR (MELHORAR O CODIGO)
+ * ARRUMAR ERROR HANDLING (QUANDO NAO TEM INTERNET, MOSTRAR AVISO)
  */

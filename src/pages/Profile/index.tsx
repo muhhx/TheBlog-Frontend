@@ -96,23 +96,17 @@ export default function Profile() {
                   <span style={{ fontWeight: "600" }}>{user.posts.length}</span>
                 </C.DataContainer>
                 <C.DataContainer>
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => open("seguidores")}
-                  >
+                  <C.SpanButton onClick={() => open("seguidores")}>
                     Seguidores
-                  </span>
+                  </C.SpanButton>
                   <span style={{ fontWeight: "600" }}>
                     {user.followersCount}
                   </span>
                 </C.DataContainer>
                 <C.DataContainer>
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => open("seguindo")}
-                  >
+                  <C.SpanButton onClick={() => open("seguindo")}>
                     Seguindo
-                  </span>
+                  </C.SpanButton>
                   <span style={{ fontWeight: "600" }}>
                     {user.followingCount}
                   </span>
@@ -149,6 +143,7 @@ export default function Profile() {
                       image={post.image}
                       summary={post.summary}
                       title={post.title}
+                      slug={post.slug}
                     />
                   ))
                 : !user.favorites
@@ -161,6 +156,7 @@ export default function Profile() {
                       image={post.image}
                       summary={post.summary}
                       title={post.title}
+                      slug={post.slug}
                     />
                   ))}
             </C.Posts>

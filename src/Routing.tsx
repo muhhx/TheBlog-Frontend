@@ -6,6 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Post from "./pages/Post";
 import Editor from "./pages/Editor";
 import Create from "./pages/Create";
 
@@ -25,6 +26,7 @@ export default function Routing() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/user/:id" element={<Profile />} />
+            <Route path="/post/:slug" element={<Post />} />
             <Route path="/search" element={<div>Search</div>} />
           </Route>
           <Route element={<SecondaryLayout />}>

@@ -63,6 +63,7 @@ export const FollowingContainer = styled.div`
   align-items: flex-start;
   overflow-y: scroll;
   gap: 10px;
+  padding-right: 10px;
 
   @media only screen and (max-width: 530px) {
     height: auto;
