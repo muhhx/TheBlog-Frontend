@@ -1,6 +1,6 @@
-import { IFollower } from "../../../../features/user/userTypes";
+import { IFollower } from "../../../features/user/userTypes";
 import { useSelector } from "react-redux";
-import { selectAuthState } from "../../../../features/auth/authSlice";
+import { selectAuthState } from "../../../features/auth/authSlice";
 import * as C from "./styles";
 
 export default function Profile({ userInfo }: { userInfo: IFollower }) {

@@ -43,6 +43,7 @@ export default function Routing() {
               <Route path="/new" element={<Create />} />
             </Route>
           </Route>
+          <Route path="*" element={<div>Página não encontrada</div>} />
         </Route>
       </Routes>
     </Router>

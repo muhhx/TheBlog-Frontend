@@ -55,15 +55,15 @@ export const Close = styled.div`
   background-size: 80% auto;
 `;
 
-export const FollowingContainer = styled.div`
+export const FollowersContainer = styled.div`
   width: 100%;
   height: 500px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   overflow-y: scroll;
-  gap: 10px;
   padding-right: 10px;
+  gap: 10px;
 
   @media only screen and (max-width: 530px) {
     height: auto;

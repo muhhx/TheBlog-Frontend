@@ -1,7 +1,7 @@
-import usePanel from "../../../hooks/usePanel";
-import useDeletePost from "../../../hooks/useDeletePost";
+import usePanel from "../../hooks/usePanel";
+import useDeletePost from "../../hooks/useDeletePost";
 
-import Spinner from "../../Spinner";
+import Spinner from "../Spinner";
 import * as C from "./styles";
 
 const CLOSE_ICON =

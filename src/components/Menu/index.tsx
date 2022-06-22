@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectAuthState } from "../../../features/auth/authSlice";
-import useLogout from "../../../hooks/useLogout";
-import usePanel from "../../../hooks/usePanel";
+import { selectAuthState } from "../../features/auth/authSlice";
+import useLogout from "../../hooks/useLogout";
+import usePanel from "../../hooks/usePanel";
 import * as C from "./styles";
-import Spinner from "../../Spinner";
+import Spinner from "../Spinner";
 
 const CLOSE_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.2.0/png/iconmonstr-x-mark-lined.png&r=50&g=50&b=50";

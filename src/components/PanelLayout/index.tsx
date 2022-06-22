@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { selectPanelState } from "../../features/panel/panelSlice";
 import usePanel from "../../hooks/usePanel";
 
-import Menu from "./Menu";
-import Create from "./Create";
-import DeletePost from "./DeletePost";
-import Followers from "./Followers";
-import Following from "./Following";
-import * as C from "./styles";
+import Menu from "../Menu";
+import Create from "../Create";
+import DeletePost from "../DeletePost";
+import Followers from "../Followers";
+import Following from "../Following";
+import * as C from "../PanelLayout/styles";
 
 export default function PanelLayout() {
   const { pathname } = useLocation();

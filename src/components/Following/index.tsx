@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { selectUserFollowing } from "../../../features/user/userSlice";
-import usePanel from "../../../hooks/usePanel";
+import { selectUserFollowing } from "../../features/user/userSlice";
+import usePanel from "../../hooks/usePanel";
 
 import Profile from "./Profile";
 import * as C from "./styles";
@@ -19,11 +19,11 @@ export default function Following() {
           <C.Header>Seguindo</C.Header>
           <C.Close image={CLOSE_ICON} onClick={close} />
         </C.CloseContainer>
-        <C.FollowingContainer>
-          {following.map((follower) => (
-            <Profile key={follower._id} userInfo={follower} />
+        <C.FollowersContainer>
+          {following.map((follow) => (
+            <Profile key={follow._id} userInfo={follow} />
           ))}
-        </C.FollowingContainer>
+        </C.FollowersContainer>
       </C.Wrapper>
     </C.Container>
   );

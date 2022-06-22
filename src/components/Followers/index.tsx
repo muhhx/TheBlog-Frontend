@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { selectUserFollowers } from "../../../features/user/userSlice";
-import usePanel from "../../../hooks/usePanel";
+import { selectUserFollowers } from "../../features/user/userSlice";
+import usePanel from "../../hooks/usePanel";
 
 import Profile from "./Profile";
 import * as C from "./styles";

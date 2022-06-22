@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useCreatePost from "../../../hooks/useCreatePost";
+import useCreatePost from "../../hooks/useCreatePost";
 import { useSelector } from "react-redux";
-import { selectAuthState } from "../../../features/auth/authSlice";
-import usePanel from "../../../hooks/usePanel";
+import { selectAuthState } from "../../features/auth/authSlice";
+import usePanel from "../../hooks/usePanel";
 
 import * as C from "./styles";
-import Spinner from "../../Spinner";
+import Spinner from "../Spinner";
 
 const ERR_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-warning-7.png&r=255&g=94&b=94";
