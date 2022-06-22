@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import usePanel from "../../hooks/usePanel";
 import * as C from "./styles";
+import styles from "../../config/reactMarkdown.module.css";
 
 export default function Create() {
   const { open } = usePanel();
@@ -92,7 +94,11 @@ export default function Create() {
             show={display === "preview" ? false : true}
           />
           <C.Preview show={display === "editor" ? false : true}>
-            <ReactMarkdown children={content} />
+            <ReactMarkdown
+              children={content}
+              className={styles.reactMarkdown}
+              remarkPlugins={[remarkGfm]}
+            />
           </C.Preview>
         </C.Wrapper>
       </C.ContentContainer>

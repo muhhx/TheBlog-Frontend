@@ -20,7 +20,7 @@ export default function Post() {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    if (slug && userId) dispatch(fetchPostData({ slug, userId }));
+    if (slug) dispatch(fetchPostData({ slug, userId }));
   }, [slug, userId]);
 
   return (
@@ -66,7 +66,11 @@ export default function Post() {
               <C.User>
                 <C.Picture image={post.user.picture} />
                 <C.UserWrapper>
-                  <C.Name>{post.user.name}</C.Name>
+                  <C.Name>
+                    <C.NameLink to={`/user/${post.user.username}`}>
+                      {post.user.name}
+                    </C.NameLink>
+                  </C.Name>
                   <C.Information>
                     @{post.user.username}, {post.data.createdAt}
                   </C.Information>
@@ -77,9 +81,12 @@ export default function Post() {
                 isSaved={post.isSaved}
                 upvotesCount={post.upvotesCount}
                 postId={post.data._id}
+                isCurrentUser={post.isCurrentUser}
               />
             </C.UserContainer>
-            <Content content={post.data.content} />
+            <C.ContentContainer>
+              <Content content={post.data.content} />
+            </C.ContentContainer>
           </>
         )}
       </C.Wrapper>

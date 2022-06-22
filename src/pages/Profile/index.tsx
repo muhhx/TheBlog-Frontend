@@ -1,67 +1,44 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { selectAuthState } from "../../features/auth/authSlice";
 import { selectUserAll, fetchAllUserData } from "../../features/user/userSlice";
-import { IPost } from "../../features/user/userTypes";
-
-import useFollow from "../../hooks/useFollow";
-import useUnfollow from "../../hooks/useUnfollow";
-import usePanel from "../../hooks/usePanel";
 
 import * as C from "./styles";
 import Spinner from "../../components/Spinner";
-import PostCard from "./PostCard";
-
-const FOLLOW_ICON =
-  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.0.0/png/iconmonstr-plus-circle-filled.png&r=255&g=255&b=255";
-const EDIT_ICON =
-  "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-edit-10.png&r=255&g=255&b=255";
+import Card from "../../components/Card";
+import Buttons from "./Buttons";
+import Data from "./Data";
 
 export default function Profile() {
+  const [option, setOption] = useState<"posts" | "favorites">("posts");
   const { id } = useParams();
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
-
   const auth = useSelector(selectAuthState);
   const user = useSelector(selectUserAll);
-  const [followStatus, followError, follow] = useFollow();
-  const [unfollowStatus, unfollowError, unfollow] = useUnfollow();
-  const { open } = usePanel();
-
-  const [option, setOption] = useState(0);
-  const [hover, setHover] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    setOption(0);
-  }, [user.profile._id]);
-
-  useEffect(() => {
-    if (id && (auth.userId || auth.userId === null)) {
+    if (id && auth.userId !== undefined)
       dispatch(fetchAllUserData({ username: id, userId: auth.userId }));
-    }
+    setOption("posts");
   }, [id, auth.userId]);
-
-  const handleButtonSubmit = async () => {
-    if (!auth.isAuth) return navigate("/login");
-    if (user.isCurrentUser) return navigate("/editor");
-    if (!user.isBeingFollowed && user.profile._id)
-      return follow(user.profile._id);
-    if (user.profile._id) return unfollow(user.profile._id);
-  };
 
   return (
     <>
-      {user.status === "idle" || user.status === "pending" ? (
+      {user.status === "pending" && (
         <C.LoadingContainer>
           <Spinner />
         </C.LoadingContainer>
-      ) : user.status === "failure" ? (
+      )}
+
+      {user.status === "failure" && (
         <C.LoadingContainer>
           <div>{user.error}</div>
         </C.LoadingContainer>
-      ) : (
+      )}
+
+      {user.status === "success" && (
         <C.Container>
           <C.AsideWrapper>
             <C.Information>
@@ -73,92 +50,58 @@ export default function Profile() {
                   <C.Span>{user.profile.bio}</C.Span>
                 </C.SpanWrapper>
               </C.ProfileHeader>
-              {!user.isBeingFollowed ? (
-                <C.Button onClick={handleButtonSubmit}>
-                  {user.isCurrentUser ? "Editar Perfil" : "Seguir"}
-                  <C.Icon image={FOLLOW_ICON} />
-                  {followStatus === "loading" ? <Spinner /> : ""}
-                </C.Button>
-              ) : (
-                <C.Unfollow
-                  onMouseOver={() => setHover(true)}
-                  onMouseOut={() => setHover(false)}
-                  hover={hover}
-                  onClick={handleButtonSubmit}
-                >
-                  {hover ? "Deixar de seguir" : "Seguindo"}
-                  {unfollowStatus === "loading" ? <Spinner /> : ""}
-                </C.Unfollow>
-              )}
-              <C.DataWrapper>
-                <C.DataContainer>
-                  <span>Posts</span>
-                  <span style={{ fontWeight: "600" }}>{user.posts.length}</span>
-                </C.DataContainer>
-                <C.DataContainer>
-                  <C.SpanButton onClick={() => open("seguidores")}>
-                    Seguidores
-                  </C.SpanButton>
-                  <span style={{ fontWeight: "600" }}>
-                    {user.followersCount}
-                  </span>
-                </C.DataContainer>
-                <C.DataContainer>
-                  <C.SpanButton onClick={() => open("seguindo")}>
-                    Seguindo
-                  </C.SpanButton>
-                  <span style={{ fontWeight: "600" }}>
-                    {user.followingCount}
-                  </span>
-                </C.DataContainer>
-              </C.DataWrapper>
+
+              <Buttons
+                isBeingFollowed={user.isBeingFollowed}
+                isCurrentUser={user.isCurrentUser}
+                isAuth={auth.isAuth}
+                id={user.profile._id}
+              />
+
+              <Data user={user} />
             </C.Information>
           </C.AsideWrapper>
+
           <C.MainWrapper>
             <C.OptionWrapper>
               <C.Option
-                onClick={() => setOption(0)}
-                selected={option === 0 ? true : false}
+                onClick={() => setOption("posts")}
+                selected={option === "posts" ? true : false}
               >
                 Posts
               </C.Option>
-              {user.isCurrentUser ? (
+
+              {user.isCurrentUser && (
                 <C.Option
-                  onClick={() => setOption(1)}
-                  selected={option === 1 ? true : false}
+                  onClick={() => setOption("favorites")}
+                  selected={option === "favorites" ? true : false}
                 >
                   Favoritos
                 </C.Option>
-              ) : (
-                ""
               )}
             </C.OptionWrapper>
+
             <C.Posts>
-              {option === 0
-                ? user.posts.map((post: IPost, i) => (
-                    <PostCard
-                      key={i}
-                      id={post._id}
-                      authorId={post.authorId}
-                      image={post.image}
-                      summary={post.summary}
-                      title={post.title}
-                      slug={post.slug}
-                    />
-                  ))
-                : !user.favorites
-                ? ""
-                : user.favorites.map((post: IPost, i) => (
-                    <PostCard
-                      key={i}
-                      id={post._id}
-                      authorId={post.authorId}
-                      image={post.image}
-                      summary={post.summary}
-                      title={post.title}
-                      slug={post.slug}
-                    />
-                  ))}
+              {option === "posts" &&
+                user.posts.map((post) => (
+                  <Card
+                    key={post._id}
+                    post={post}
+                    type={"userPosts"}
+                    isCurrentUser={user.isCurrentUser}
+                  />
+                ))}
+
+              {option === "favorites" &&
+                user.favorites &&
+                user.favorites.map((post) => (
+                  <Card
+                    key={post._id}
+                    post={post}
+                    type={"userFavorites"}
+                    isCurrentUser={user.isCurrentUser}
+                  />
+                ))}
             </C.Posts>
           </C.MainWrapper>
         </C.Container>

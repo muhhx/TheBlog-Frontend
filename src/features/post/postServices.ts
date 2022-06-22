@@ -17,7 +17,7 @@ const getPostUpvotes = async (postId: string) => {
   return data.data as IUpvotedUser[];
 };
 
-const getFavoriteCheck = async (postId: string, userId: string) => {
+const getFavoriteCheck = async (postId: string, userId: string | null) => {
   const { data } = await axiosPublic.put(`/api/favorite/${postId}`, { userId });
 
   return data.isSaved as boolean;

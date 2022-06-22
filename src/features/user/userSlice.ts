@@ -26,10 +26,7 @@ const initialState: IUser = {
 
 export const fetchAllUserData = createAsyncThunk(
   "user/fetchAllUserData",
-  async (
-    payload: { username: string; userId: string | undefined | null },
-    thunkAPI
-  ) => {
+  async (payload: { username: string; userId: string | null }, thunkAPI) => {
     try {
       const profile = await userServices.fetchUserInfo(payload.username);
       const posts = await userServices.fetchUserPosts(payload.username);
@@ -178,6 +175,28 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const removeFavorite = createAsyncThunk(
+  "user/removeFavorite",
+  async (payload: { postId: string }, thunkAPI) => {
+    try {
+      await userServices.removeFavorite(payload.postId);
+
+      return { success: true, postId: payload.postId };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível remover dos favoritos.",
+        });
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -222,6 +241,12 @@ const userSlice = createSlice({
       })
       .addCase(deletePost.fulfilled, (state, { payload }) => {
         state.posts = state.posts.filter((post) => post._id !== payload.postId);
+      })
+      .addCase(removeFavorite.fulfilled, (state, { payload }) => {
+        const newFavorites = state.favorites?.filter(
+          (fav) => fav._id !== payload.postId
+        );
+        state.favorites = newFavorites || null;
       });
   },
 });
@@ -230,11 +255,3 @@ export const selectUserAll = (state: RootState) => state.user;
 export const selectUserFollowers = (state: RootState) => state.user.followers;
 export const selectUserFollowing = (state: RootState) => state.user.following;
 export default userSlice.reducer;
-
-//Dados do usuaro (preciso dos dados do following/followers em vários outros componentes, por exemplo)
-//On component unmount (got out of the page, setUser to null!) -  Só vou ter os dados do usuario na pagina do usuario
-
-//Esse userSlice tem que ser em relaçao a mim. Preciso dos meus dados atualizados, nao dos outros.
-//Quando eu entro no post, verificar se eu sigo ou n e colocar no isFollowing. Os dados das outras pessoas só precisam mudar uma vez
-
-//Simplismente pegar os dados da pessoa da pagina, ai na propria pagina, comparar com os dados do usuario autenticado. a partir disso, tomar decisoes

@@ -39,15 +39,15 @@ export default function Menu() {
         <C.ButtonLink to="/">Discover</C.ButtonLink>
       </C.PageNavigation>
 
-      {isAuth && (
+      {/* {isAuth && (
         <C.PageNavigation isSelected={currentPage === "foryou" ? true : false}>
           <C.ButtonLink to="/foryou">For You</C.ButtonLink>
         </C.PageNavigation>
-      )}
+      )} */}
 
-      <C.PageNavigation isSelected={currentPage === "search" ? true : false}>
+      {/* <C.PageNavigation isSelected={currentPage === "search" ? true : false}>
         <C.ButtonLink to="/search">Search</C.ButtonLink>
-      </C.PageNavigation>
+      </C.PageNavigation> */}
 
       <C.ButtonWrapper>
         {isAuth && (

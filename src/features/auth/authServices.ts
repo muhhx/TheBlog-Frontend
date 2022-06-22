@@ -25,5 +25,3 @@ const authServices = {
 };
 
 export default authServices;
-
-//DELETE USER

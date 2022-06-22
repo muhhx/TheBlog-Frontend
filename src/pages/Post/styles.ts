@@ -142,3 +142,18 @@ export const NavLink = styled(Link)`
   font-weight: 400;
   font-size: 14px;
 `;
+
+export const NameLink = styled(Link)`
+  color: inherit;
+  text-decoration: inherit;
+`;
+
+export const ContentContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: solid 1px #dfdfdf;
+  border-bottom: solid 1px #dfdfdf;
+  padding: 50px 0px;
+`;

@@ -12,14 +12,15 @@ const MENU_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.3.0/png/iconmonstr-menu-lined.png&r=50&g=50&b=50";
 
 export default function Header() {
-  const { pathname } = useLocation();
-  const auth = useSelector(selectAuthState);
-  const navigate = useNavigate();
-  const { open } = usePanel();
-  const [status, error, logout] = useLogout();
   const [currentPage, setCurrentPage] = useState<
     null | "discover" | "foryou" | "search"
   >(null);
+
+  const [status, error, logout] = useLogout();
+  const { pathname } = useLocation();
+  const { open } = usePanel();
+  const navigate = useNavigate();
+  const auth = useSelector(selectAuthState);
 
   useEffect(() => {
     if (pathname === "/") setCurrentPage("discover");
@@ -39,37 +40,45 @@ export default function Header() {
           >
             Discover
           </C.PageNavigation>
-          {auth.isAuth && (
+
+          {/* {auth.isAuth && (
             <C.PageNavigation
               onClick={() => navigate("/foryou")}
               isSelected={currentPage === "foryou" ? true : false}
             >
               For You
             </C.PageNavigation>
-          )}
-          <C.PageNavigation
+          )} */}
+
+          {/* <C.PageNavigation
             onClick={() => navigate("/search")}
             isSelected={currentPage === "search" ? true : false}
           >
             Search
-          </C.PageNavigation>
+          </C.PageNavigation> */}
         </C.Wrapper>
-        {auth.isAuth ? (
+
+        {auth.isAuth && (
           <C.Wrapper>
             <C.Button onClick={() => navigate("/new")}>Novo Post</C.Button>
+
             <C.LoginButton onClick={logout}>
-              Log Out {status === "loading" ? <Spinner /> : ""}
+              Log Out {status === "loading" && <Spinner />}
             </C.LoginButton>
+
             <C.Profile
               image={auth.picture ? auth.picture : ""}
               onClick={() => navigate(`/user/${auth.username}`)}
             />
           </C.Wrapper>
-        ) : (
+        )}
+
+        {!auth.isAuth && (
           <C.Wrapper>
             <C.ButtonLink to="/login">
               <C.LoginButton>Log In</C.LoginButton>
             </C.ButtonLink>
+
             <C.ButtonLink to="/register">
               <C.Button>Sign Up</C.Button>
             </C.ButtonLink>

@@ -19,18 +19,23 @@ export default function Buttons({
   isSaved,
   upvotesCount,
   postId,
+  isCurrentUser,
 }: {
   isLiked: boolean;
   isSaved: boolean;
   upvotesCount: number;
   postId: string;
+  isCurrentUser: boolean;
 }) {
   const [upvoteStatus, upvoteError, handleUpvote] = useUpvote();
   const [favoriteStatus, favoriteError, handleFavorite] = useFavorite();
 
   return (
     <C.Buttons>
-      <C.Upvote onClick={() => handleUpvote(postId)}>
+      <C.Upvote
+        onClick={() => handleUpvote(postId)}
+        disabled={upvoteStatus === "loading" ? true : false}
+      >
         {upvoteStatus === "loading" && <Spinner />}
 
         {upvoteStatus !== "loading" && (
@@ -41,7 +46,8 @@ export default function Buttons({
           </>
         )}
       </C.Upvote>
-      <C.Save onClick={() => handleFavorite(postId)}>
+
+      <C.Save onClick={() => handleFavorite(postId)} disabled={isCurrentUser}>
         {favoriteStatus === "loading" && <WhiteSpinner />}
 
         {favoriteStatus !== "loading" && (

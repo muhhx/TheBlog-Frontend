@@ -132,89 +132,8 @@ export const SpanWrapper = styled.div`
   align-items: center;
 `;
 
-export const DataWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 400px;
-`;
-
-export const DataContainer = styled.div`
-  width: 100%;
-  display: flex;
-
-  justify-content: space-between;
-`;
-
 export const Span = styled.span`
   color: dimgray;
   font-size: 12px;
   text-align: center;
-`;
-
-export const Button = styled.button`
-  background-color: #0057ff;
-  border: none;
-  border-radius: 100px;
-  min-height: 36px;
-  font-family: inherit;
-  color: white;
-  font-weight: 600;
-  padding: 5px 20px;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  &:disabled {
-    background-color: #f4f4f4;
-    color: #bcbcbc;
-    cursor: initial;
-  }
-
-  &:hover:enabled {
-    background-color: #003ecb;
-  }
-`;
-
-export const Unfollow = styled.button`
-  background-color: ${(props: IProps) =>
-    !props.hover ? "#e8e8e8" : "#cc1b1b"};
-  border: none;
-  border-radius: 100px;
-  min-height: 36px;
-  font-family: inherit;
-  color: white;
-  font-weight: 600;
-  padding: 5px 20px;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-`;
-
-export const Icon = styled.div`
-  height: 15px;
-  aspect-ratio: 1;
-  background-image: url(${(props: IProps) => props.image});
-  background-position: center;
-  background-size: cover;
-`;
-
-export const SpanButton = styled.span`
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;

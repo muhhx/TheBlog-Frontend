@@ -10,24 +10,21 @@ export const fetchPosts = createAsyncThunk(
 
       return data;
     } catch (error: any) {
-      const message = error.response.data.message;
-      error instanceof Error && message
-        ? thunkAPI.rejectWithValue(message)
-        : thunkAPI.rejectWithValue("ERRO");
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      else return thunkAPI.rejectWithValue("Oops, algo deu errado.");
     }
   }
 );
 
 interface IPosts {
   posts: any[];
-  selectedPost: null | string;
   status: "idle" | "pending" | "success" | "failure";
   error: null | string;
 }
 
 const initialState: IPosts = {
   posts: [],
-  selectedPost: null,
   status: "idle",
   error: null,
 };
@@ -41,11 +38,9 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(fetchPosts.rejected, (state, action) => {
+      .addCase(fetchPosts.rejected, (state, { payload }) => {
         state.status = "failure";
-        state.error = action.payload
-          ? String(action.payload)
-          : "Algo deu errado ao registrar o usuário.";
+        state.error = typeof payload === "string" ? payload : "Algo deu errado";
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "success";
@@ -56,12 +51,3 @@ const postsSlice = createSlice({
 
 export const selectPosts = (state: RootState) => state.posts;
 export default postsSlice.reducer;
-
-//Actions:
-/**
- * 1. Fetch
- * 2. Filter
- * 3. Search (filter by search name)
- * 4. Get posts by tag
- * 5. Get posts from people that user follows, etc
- */

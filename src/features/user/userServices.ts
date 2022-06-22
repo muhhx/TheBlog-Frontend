@@ -64,6 +64,10 @@ const deletePost = async (id: string) => {
   return response.data;
 };
 
+const removeFavorite = async (postId: string) => {
+  await axiosPrivate.delete(`/api/favorite/${postId}`);
+};
+
 const userServices = {
   fetchUserInfo,
   fetchUserFollowing,
@@ -74,40 +78,7 @@ const userServices = {
   unfollowUser,
   createPost,
   deletePost,
+  removeFavorite,
 };
 
 export default userServices;
-
-//USER STATE:
-//Follow V
-//Unfollow V
-//UpdateUserInfo (username, etc) SO DAR OPCAO PRA MUDAR USERNAME!
-//CreatePost V
-//EditPost
-//DeletePost V
-
-//POST STATE:
-//Like post
-//Comment, etc
-//RemoveFavorite
-//AddFavorite
-
-/**
- * Editar info do usuario
- * Deletar usuario (deletar tudo, inclusive following/followers, posts, etc)
- * Editar post
- *
- * Coisas relacionadas a post
- * Pagina do post
- * Add/Deletar favorito
- * Like
- * Comentar
- *
- * Coisas relacionadas a home page e pesquisa
- * TAGS!
- * Algoritmo
- * Notificações!
- *
- * MODULARIZAR E COMPONENTIZAR (MELHORAR O CODIGO)
- * ARRUMAR ERROR HANDLING (QUANDO NAO TEM INTERNET, MOSTRAR AVISO)
- */

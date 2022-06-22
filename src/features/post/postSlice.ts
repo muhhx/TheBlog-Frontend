@@ -33,7 +33,10 @@ const initialState: IPost = {
 
 export const fetchPostData = createAsyncThunk(
   "post/fetchPostData",
-  async ({ slug, userId }: { slug: string; userId: string }, thunkAPI) => {
+  async (
+    { slug, userId }: { slug: string; userId: string | null },
+    thunkAPI
+  ) => {
     try {
       const { user, post } = await postServices.getPostData(slug);
       const upvotes = await postServices.getPostUpvotes(post._id);

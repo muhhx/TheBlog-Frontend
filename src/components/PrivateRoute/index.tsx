@@ -9,13 +9,19 @@ export default function PrivateRoute() {
   const auth = useSelector(selectAuthState);
   const location = useLocation();
 
-  return auth.status === "pending" || auth.status === "idle" ? (
-    <C.Container>
-      <Spinner />
-    </C.Container>
-  ) : auth.isAuth ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+  return (
+    <>
+      {(auth.status === "pending" || auth.status === "idle") && (
+        <C.Container>
+          <Spinner />
+        </C.Container>
+      )}
+
+      {auth.isAuth && <Outlet />}
+
+      {!auth.isAuth && (
+        <Navigate to="/login" state={{ from: location }} replace />
+      )}
+    </>
   );
 }
