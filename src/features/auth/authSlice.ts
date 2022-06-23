@@ -87,6 +87,64 @@ export const loginAuth = createAsyncThunk(
   }
 );
 
+export const updateAccount = createAsyncThunk(
+  "auth/updateAccount",
+  async (
+    payload: {
+      name?: string;
+      username?: string;
+      bio?: string;
+      picture?: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await authServices.updateAccount(payload);
+
+      return { success: true, response };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível mudar seus dados.",
+        });
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (
+    payload: { password: string; passwordConfirmation: string },
+    thunkAPI
+  ) => {
+    try {
+      await authServices.changePassword(
+        payload.password,
+        payload.passwordConfirmation
+      );
+
+      return { success: true };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível mudar sua senha.",
+        });
+    }
+  }
+);
+
 const initialState: IAuth = {
   isAuth: false,
   name: null,
@@ -161,6 +219,13 @@ export const authSlice = createSlice({
         state.name = null;
         state.username = null;
         state.picture = null;
+      })
+      .addCase(updateAccount.fulfilled, (state, { payload }) => {
+        const { name, username, picture } = payload.response;
+
+        state.name = name ? name : state.name;
+        state.username = username ? username : state.username;
+        state.picture = picture ? picture : state.picture;
       });
   },
 });

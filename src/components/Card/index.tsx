@@ -37,8 +37,6 @@ export default function Card({ post, type, isCurrentUser }: IProps) {
 
       <C.Wrapper>
         <C.Information>
-          <span>tag1 - tag2</span>
-
           <C.Title>{post.title}</C.Title>
           <C.Summary>{post.summary}</C.Summary>
         </C.Information>

@@ -6,3 +6,10 @@ export default interface IAuth {
   userId: null | string;
   status: "idle" | "pending" | "success" | "failure";
 }
+
+export interface IAccountUpdate {
+  name?: string;
+  username?: string;
+  picture?: string;
+  bio?: string;
+}

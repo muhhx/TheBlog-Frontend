@@ -4,37 +4,6 @@ interface IProps {
   image: string;
 }
 
-export const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-export const Wrapper = styled.div`
-  width: 90%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 100px;
-  padding: 50px 0px;
-`;
-
-export const Section = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-`;
-
-export const Header = styled.h1`
-  color: #323232;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: 0;
-`;
-
 export const InputContainer = styled.div`
   width: 100%;
   display: flex;
