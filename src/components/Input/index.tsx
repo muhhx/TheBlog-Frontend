@@ -35,7 +35,7 @@ export default function Input({
       <C.InputHolder>
         <C.Input
           type={!displayPassword ? inputType : "text"}
-          id={state}
+          id={String(Math.random())}
           autoComplete="off"
           value={state}
           onChange={(e) => setState(e.target.value)}
