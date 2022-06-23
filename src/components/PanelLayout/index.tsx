@@ -9,6 +9,7 @@ import Create from "../Create";
 import DeletePost from "../DeletePost";
 import Followers from "../Followers";
 import Following from "../Following";
+import DeleteAccount from "../DeleteAccount";
 import * as C from "../PanelLayout/styles";
 
 export default function PanelLayout() {
@@ -36,6 +37,7 @@ export default function PanelLayout() {
             {category === "delete" && typeof payload === "string" && (
               <DeletePost id={payload} />
             )}
+            {category === "deleteAccount" && <DeleteAccount />}
           </C.Panel>
         </C.PanelContainer>
       )}

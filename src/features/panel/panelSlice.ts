@@ -3,7 +3,14 @@ import { RootState } from "../../app/store";
 
 interface IPanel {
   display: boolean;
-  category: null | "seguidores" | "seguindo" | "create" | "delete" | "menu";
+  category:
+    | null
+    | "seguidores"
+    | "seguindo"
+    | "create"
+    | "delete"
+    | "menu"
+    | "deleteAccount";
   payload: null | string | { title: string; content: string };
 }
 

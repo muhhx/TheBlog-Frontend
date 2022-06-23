@@ -40,7 +40,9 @@ export const changePassword = async (
   });
 };
 
-export const deleteAccount = async () => {};
+export const deleteAccount = async (password: string) => {
+  await axiosPrivate.put("/api/user/delete", { password });
+};
 
 const authServices = {
   fetchSession,
@@ -48,6 +50,7 @@ const authServices = {
   logoutSession,
   updateAccount,
   changePassword,
+  deleteAccount,
 };
 
 export default authServices;

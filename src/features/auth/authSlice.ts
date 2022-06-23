@@ -145,6 +145,28 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+export const deleteAccount = createAsyncThunk(
+  "auth/deleteAccount",
+  async (payload: { password: string }, thunkAPI) => {
+    try {
+      await authServices.deleteAccount(payload.password);
+
+      return { success: true };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível deletar sua conta.",
+        });
+    }
+  }
+);
+
 const initialState: IAuth = {
   isAuth: false,
   name: null,
@@ -226,6 +248,13 @@ export const authSlice = createSlice({
         state.name = name ? name : state.name;
         state.username = username ? username : state.username;
         state.picture = picture ? picture : state.picture;
+      })
+      .addCase(deleteAccount.fulfilled, (state) => {
+        state.name = null;
+        state.username = null;
+        state.picture = null;
+        state.userId = null;
+        state.isAuth = false;
       });
   },
 });

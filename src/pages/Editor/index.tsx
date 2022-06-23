@@ -1,8 +1,11 @@
+import usePanel from "../../hooks/usePanel";
 import * as C from "./styles";
 import ChangePassword from "./ChangePassword";
 import ChangeData from "./ChangeData";
 
 export default function Editor() {
+  const { open } = usePanel();
+
   return (
     <C.Container>
       <C.Wrapper>
@@ -16,17 +19,8 @@ export default function Editor() {
           <ChangePassword />
         </C.Section>
 
-        <div>delete account bttn - COMPONENTE</div>
+        <C.Button onClick={() => open("deleteAccount")}>Deletar Conta</C.Button>
       </C.Wrapper>
     </C.Container>
   );
 }
-
-//Nao preciso gerar novo JWT pois a unica info relevate seria o userID
-//Atualizar essa infos no redux/auth (mudar informações sobre o usuario autenticado)
-
-//useUpdateAccount
-//useUpdatePassword
-//useDeleteAccount
-
-//Usar panel para confirmar deletar conta (prover senha atual)

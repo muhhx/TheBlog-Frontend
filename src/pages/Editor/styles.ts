@@ -29,62 +29,35 @@ export const Section = styled.div`
 
 export const Header = styled.h1`
   color: #323232;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: 0;
 `;
 
-export const InputContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  height: 60px;
-  position: relative;
-`;
-
-export const Label = styled.label`
-  color: #747474;
-  font-size: 10px;
-  font-weight: 500;
-`;
-
-export const Error = styled.label`
-  color: #e34850;
-  font-size: 12px;
-  font-weight: 500;
-  padding-top: 5px;
-`;
-
-export const InputHolder = styled.div`
-  width: 100%;
-  position: relative;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  padding-right: 50px;
+export const Button = styled.button`
+  background-color: #cc1b1b;
+  height: 32px;
   border: none;
-  outline: none;
-  border-bottom: solid 1px #d3d3d3;
-  font-size: 14px;
+  border-radius: 100px;
+  min-height: 36px;
   font-family: inherit;
-  color: #323232;
-  height: 28px;
+  color: white;
+  font-weight: 600;
+  padding: 5px 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  width: 200px;
 
-  &:focus {
-    border-bottom: solid 2px #1473e6;
+  &:hover:enabled {
+    background-color: #b91b1b;
   }
-`;
 
-export const Icon = styled.div`
-  position: absolute;
-  right: 0px;
-  bottom: 6px;
-  height: 15px;
-  aspect-ratio: 1;
-  background-image: url(${(props: IProps) => props.image});
-  background-position: center;
-  background-size: cover;
+  @media only screen and (max-width: 535px) {
+    width: 100%;
+  }
 `;

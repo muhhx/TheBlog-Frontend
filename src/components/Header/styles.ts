@@ -101,6 +101,10 @@ export const Profile = styled.div`
   background-position: center;
   background-size: cover;
   cursor: pointer;
+
+  &:hover {
+    border: solid 2px #3278ff;
+  }
 `;
 
 export const Icon = styled.div`
