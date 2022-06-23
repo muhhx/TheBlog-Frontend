@@ -244,7 +244,7 @@ export const authSlice = createSlice({
       })
       .addCase(updateAccount.fulfilled, (state, { payload }) => {
         const { name, username, picture } = payload.response;
-
+        console.log(name, username, picture);
         state.name = name ? name : state.name;
         state.username = username ? username : state.username;
         state.picture = picture ? picture : state.picture;

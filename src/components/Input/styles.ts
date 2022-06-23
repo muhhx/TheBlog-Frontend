@@ -57,3 +57,15 @@ export const Icon = styled.div`
   background-position: center;
   background-size: cover;
 `;
+
+export const ShowPassword = styled.div`
+  position: absolute;
+  right: 20px;
+  bottom: 6px;
+  height: 15px;
+  aspect-ratio: 1;
+  background-image: url(${(props: IProps) => props.image});
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+`;

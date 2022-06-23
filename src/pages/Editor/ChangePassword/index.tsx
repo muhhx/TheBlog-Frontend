@@ -48,6 +48,7 @@ export default function ChangePassword() {
         setState={setPassword}
         error="Senha inválida"
       />
+
       <Input
         label="New password confirmation"
         inputType="password"
@@ -56,6 +57,7 @@ export default function ChangePassword() {
         setState={setPasswordConfirmation}
         error="As senhas não são iguais!"
       />
+
       <C.Button
         disabled={
           !validPassword || !passwordsMatch || status === "loading"
