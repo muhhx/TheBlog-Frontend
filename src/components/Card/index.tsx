@@ -44,13 +44,13 @@ export default function Card({ post, type, isCurrentUser }: IProps) {
         <C.Buttons>
           {type === "userPosts" && isCurrentUser && (
             <C.UserPosts>
-              <C.Edit>
+              {/* <C.Edit>
                 <span>Editar</span>
                 <C.FlexButton>
                   <C.ReadDivisor>|</C.ReadDivisor>
                   <C.Icon image={EDIT_ICON} />
                 </C.FlexButton>
-              </C.Edit>
+              </C.Edit> */}
               <C.Delete onClick={() => open("delete", post._id)}>
                 <span>Deletar</span>
                 <C.FlexButton>
