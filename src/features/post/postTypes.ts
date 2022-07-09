@@ -25,12 +25,28 @@ export interface IPostUser {
   username: string | null;
 }
 
+export interface IComment {
+  _id: string;
+  authorId: string;
+  postId: string;
+  comment: string;
+  createdAt: number;
+  updatedAt: number;
+  __v: number;
+}
+
+export interface ICommentData {
+  comment: IComment;
+  userData: IPostUser;
+}
+
 export interface IPost {
   isCurrentUser: boolean;
   isLiked: boolean;
   isSaved: boolean;
   upvotes: IUpvotedUser[];
   upvotesCount: number;
+  comments: ICommentData[];
   data: IPostData;
   user: IPostUser;
   status: "idle" | "pending" | "success" | "failure";

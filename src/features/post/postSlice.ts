@@ -9,6 +9,7 @@ const initialState: IPost = {
   isSaved: false,
   upvotes: [],
   upvotesCount: 0,
+  comments: [],
   data: {
     _id: "",
     __v: 0,
@@ -41,6 +42,7 @@ export const fetchPostData = createAsyncThunk(
       const { user, post } = await postServices.getPostData(slug);
       const upvotes = await postServices.getPostUpvotes(post._id);
       const isSaved = await postServices.getFavoriteCheck(post._id, userId);
+      const comments = await postServices.getComments(post._id);
 
       const userLiked = upvotes.filter((user) => user._id === userId);
 
@@ -54,6 +56,7 @@ export const fetchPostData = createAsyncThunk(
         isSaved,
         upvotes,
         upvotesCount,
+        comments,
         post,
         user,
       };
@@ -160,6 +163,81 @@ export const removePost = createAsyncThunk(
   }
 );
 
+export const createComment = createAsyncThunk(
+  "post/createComment",
+  async (
+    { postId, comment }: { postId: string; comment: string },
+    thunkAPI
+  ) => {
+    try {
+      const newComment = await postServices.createComment(comment, postId);
+
+      return { success: true, newComment };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível criar o comentário.",
+        });
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  "post/deleteComment",
+  async ({ commentId }: { commentId: string }, thunkAPI) => {
+    try {
+      await postServices.deleteComment(commentId);
+
+      return { success: true, commentId };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível deletar o comentário.",
+        });
+    }
+  }
+);
+
+export const updateComment = createAsyncThunk(
+  "post/updateComment",
+  async (
+    { commentId, comment }: { commentId: string; comment: string },
+    thunkAPI
+  ) => {
+    try {
+      const updatedComment = await postServices.updateComment(
+        commentId,
+        comment
+      );
+
+      return { success: true, updatedComment };
+    } catch (error: any) {
+      if (error.response.data.message)
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: error.response.data.message,
+        });
+      else
+        return thunkAPI.rejectWithValue({
+          success: false,
+          message: "Oops, não foi possível atualizar o comentário.",
+        });
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -181,6 +259,7 @@ const postSlice = createSlice({
         state.isSaved = payload.isSaved;
         state.upvotesCount = payload.upvotesCount;
         state.upvotes = payload.upvotes;
+        state.comments = payload.comments;
         state.data = payload.post;
         state.user = payload.user;
       })
@@ -197,6 +276,21 @@ const postSlice = createSlice({
       })
       .addCase(removePost.fulfilled, (state) => {
         state.isSaved = false;
+      })
+      .addCase(createComment.fulfilled, (state, { payload }) => {
+        state.comments.push(payload.newComment);
+      })
+      .addCase(deleteComment.fulfilled, (state, { payload }) => {
+        state.comments = state.comments.filter(
+          (comment) => comment.comment._id !== payload.commentId
+        );
+      })
+      .addCase(updateComment.fulfilled, (state, { payload }) => {
+        for (let i = 0; i < state.comments.length; i++) {
+          if (state.comments[i].comment._id === payload.updatedComment._id) {
+            state.comments[i].comment.comment = payload.updatedComment.comment;
+          }
+        }
       }),
 });
 

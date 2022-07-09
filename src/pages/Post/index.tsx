@@ -11,17 +11,18 @@ import { AppDispatch } from "../../app/store";
 import { fetchPostData } from "../../features/post/postSlice";
 import { selectAuthState } from "../../features/auth/authSlice";
 import { selectPost } from "../../features/post/postSlice";
+import Comments from "./Comments";
 
 export default function Post() {
   const { slug } = useParams();
 
-  const { isAuth, userId } = useSelector(selectAuthState);
+  const auth = useSelector(selectAuthState);
   const post = useSelector(selectPost);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    if (slug) dispatch(fetchPostData({ slug, userId }));
-  }, [slug, userId]);
+    if (slug) dispatch(fetchPostData({ slug, userId: auth.userId }));
+  }, [slug, auth.userId]);
 
   return (
     <C.Container>
@@ -48,7 +49,7 @@ export default function Post() {
           </>
         )}
 
-        {post.status === "success" && !isAuth && (
+        {post.status === "success" && !auth.isAuth && (
           <>
             <C.Unauthorized>
               <C.Span>
@@ -60,7 +61,7 @@ export default function Post() {
           </>
         )}
 
-        {post.status === "success" && isAuth && (
+        {post.status === "success" && auth.isAuth && (
           <>
             <C.UserContainer>
               <C.User>
@@ -87,6 +88,7 @@ export default function Post() {
             <C.ContentContainer>
               <Content content={post.data.content} />
             </C.ContentContainer>
+            <Comments auth={auth} />
           </>
         )}
       </C.Wrapper>

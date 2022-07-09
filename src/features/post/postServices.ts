@@ -1,6 +1,12 @@
 import axiosPublic from "../../config/axios";
 import { axiosPrivate } from "../../config/axios";
-import { IPostData, IPostUser, IUpvotedUser } from "./postTypes";
+import {
+  IComment,
+  ICommentData,
+  IPostData,
+  IPostUser,
+  IUpvotedUser,
+} from "./postTypes";
 
 const getPostData = async (slug: string) => {
   const { data } = await axiosPublic.get(`/api/post/${slug}`);
@@ -39,14 +45,44 @@ const removePost = async (postId: string) => {
   await axiosPrivate.delete(`/api/favorite/${postId}`);
 };
 
+const createComment = async (comment: string, postId: string) => {
+  const { data } = await axiosPrivate.post(`/api/comment/${postId}`, {
+    comment,
+  });
+
+  return data as ICommentData;
+};
+
+const getComments = async (postId: string) => {
+  const { data } = await axiosPublic.get(`/api/comment/${postId}`);
+
+  return data as ICommentData[];
+};
+
+const deleteComment = async (commentId: string) => {
+  axiosPrivate.delete(`/api/comment/${commentId}`);
+};
+
+const updateComment = async (commentId: string, comment: string) => {
+  const { data } = await axiosPrivate.put(`/api/comment/${commentId}`, {
+    comment,
+  });
+
+  return data as IComment;
+};
+
 const postServices = {
   getPostData,
   getPostUpvotes,
   getFavoriteCheck,
+  getComments,
   upvotePost,
   unvotePost,
   savePost,
   removePost,
+  createComment,
+  deleteComment,
+  updateComment,
 };
 
 export default postServices;
