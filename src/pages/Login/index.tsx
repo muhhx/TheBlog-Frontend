@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useLogin from "../../hooks/useLogin";
+import getGoogleOauthUrl from "../../config/getGoogleUrl";
 
 import * as C from "./styles";
 import Spinner from "../../components/Spinner";
@@ -33,6 +34,7 @@ export default function Login() {
           Você não possui uma conta?
           <C.NavLink to="/register"> Registrar.</C.NavLink>
         </C.Span>
+        <a href={getGoogleOauthUrl()}>Fazer login com o google</a>
         {error ? <C.Error>{error}</C.Error> : ""}
       </C.HeaderWrapper>
       <C.InputWrapper>
