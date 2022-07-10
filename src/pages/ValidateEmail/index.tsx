@@ -4,7 +4,6 @@ import Spinner from "../../components/Spinner";
 import axiosPublic from "../../config/axios";
 import * as C from "./styles";
 
-//Quando o usuário cair na pagina, automaticamente fazer uma requisição axios e confirmar email ou nao
 export default function ValidateEmail() {
   const { id } = useParams();
 

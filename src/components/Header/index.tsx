@@ -26,7 +26,6 @@ export default function Header() {
     if (pathname === "/") setCurrentPage("discover");
     else if (pathname === "/foryou") setCurrentPage("foryou");
     else if (pathname.includes("search")) setCurrentPage("search");
-    else if (pathname.includes("sobre")) setCurrentPage("sobre");
     else setCurrentPage(null);
   }, [pathname]);
 
@@ -50,13 +49,6 @@ export default function Header() {
               For You
             </C.PageNavigation>
           )}
-
-          <C.PageNavigation
-            onClick={() => navigate("/sobre")}
-            isSelected={currentPage === "sobre" ? true : false}
-          >
-            Sobre
-          </C.PageNavigation>
         </C.Wrapper>
 
         {auth.isAuth && (

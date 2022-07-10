@@ -6,7 +6,6 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import Dashboard from "./pages/Dashboard";
 import Foryou from "./pages/Foryou";
-import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import Post from "./pages/Post";
 import Editor from "./pages/Editor";
@@ -29,9 +28,7 @@ export default function Routing() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/user/:id" element={<Profile />} />
             <Route path="/post/:slug" element={<Post />} />
-            <Route path="/foryou" element={<Foryou />} />
             <Route path="/sobre" element={<div>Sobre</div>} />
-            <Route path="/search" element={<Search />} />
           </Route>
           <Route element={<SecondaryLayout />}>
             <Route path="/login" element={<Login />} />
@@ -46,6 +43,7 @@ export default function Routing() {
             <Route element={<MainLayout />}>
               <Route path="/editor" element={<Editor />} />
               <Route path="/new" element={<Create />} />
+              <Route path="/foryou" element={<Foryou />} />
             </Route>
           </Route>
           <Route element={<SecondaryLayout />}>

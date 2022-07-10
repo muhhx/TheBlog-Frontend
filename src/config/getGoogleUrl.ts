@@ -1,9 +1,11 @@
+import config from "./default";
+
 export default function getGoogleOauthUrl() {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
   const options = {
-    redirect_uri: import.meta.env.VITE_APP_GOOGLE_OAUTH_REDIRECT_URL as string,
-    client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID as string,
+    redirect_uri: config.GOOGLE_OAUTH_REDIRECT_URL,
+    client_id: config.GOOGLE_CLIENT_ID,
     access_type: "offline",
     response_type: "code",
     prompt: "consent",

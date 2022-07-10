@@ -1,19 +1,22 @@
 import { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import useForyou from "../../hooks/useFotyou";
+import { useSelector } from "react-redux";
+import { selectAuthState } from "../../features/auth/authSlice";
+import useForyou from "../../hooks/useForyou";
 import Card from "../../components/Card";
 import Spinner from "../../components/Spinner";
 import * as C from "./styles";
 
 export default function Foryou() {
   const navigate = useNavigate();
+  const { isAuth } = useSelector(selectAuthState);
   const [pageNumber, setPageNumber] = useState(0);
   const [status, error, hasMore, posts] = useForyou(pageNumber);
 
   const observer: any = useRef();
   const lastPostElementRef = useCallback(
     (node: any) => {
-      if (status === "loading" || status === "failure") return;
+      if (!isAuth || status === "loading" || status === "failure") return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
@@ -22,21 +25,24 @@ export default function Foryou() {
       });
       if (node) observer.current.observe(node);
     },
-    [status, hasMore]
+    [status, hasMore, isAuth]
   );
 
   return (
     <>
+      <C.Header>
+        <C.Title>For You</C.Title>
+        <C.Subtitle>Acompanhe as pessoas que você segue.</C.Subtitle>
+      </C.Header>
+
       {!hasMore &&
         status !== "failure" &&
         status !== "loading" &&
         status !== "idle" &&
         posts.length === 0 && (
           <C.Wrapper>
-            <C.Span>
-              Nesta página aparecerão os posts das pessoas que você segue.
-            </C.Span>
-            <C.Button onClick={() => navigate("/")}>Navegar posts</C.Button>
+            <C.Span>Siga mais pessoas e acompanhe suas histórias.</C.Span>
+            <C.Button onClick={() => navigate("/")}>Descobrir posts</C.Button>
           </C.Wrapper>
         )}
 

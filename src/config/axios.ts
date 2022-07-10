@@ -1,15 +1,14 @@
 import axios from "axios";
-
-const BASE_URL = "http://localhost:5000";
+import config from "./default";
 
 export const axiosPublic = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: config.BASE_SERVER_URL,
 });
 
 export const axiosPrivate = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: config.BASE_SERVER_URL,
 });
 
 const refresh = async () => {

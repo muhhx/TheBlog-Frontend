@@ -25,9 +25,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1>Todos os posts</h1>
-      <span>Aqui aparecerao todos os posts...</span>
-      <span>Divisor igual na pagina de comentarios</span>
+      <C.Wrapper>
+        <C.Title>Discover The Blog</C.Title>
+        <C.Span>Role para baixo e descubra nossos posts...</C.Span>
+      </C.Wrapper>
 
       <C.PostsContainer>
         {posts.map((post, index) => {

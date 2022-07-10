@@ -24,7 +24,6 @@ export default function Menu() {
   useEffect(() => {
     if (pathname === "/") setCurrentPage("discover");
     else if (pathname === "/foryou") setCurrentPage("foryou");
-    else if (pathname === "/sobre") setCurrentPage("sobre");
     else setCurrentPage(null);
   }, [pathname]);
 
@@ -44,10 +43,6 @@ export default function Menu() {
           <C.ButtonLink to="/foryou">For You</C.ButtonLink>
         </C.PageNavigation>
       )}
-
-      <C.PageNavigation isSelected={currentPage === "sobre" ? true : false}>
-        <C.ButtonLink to="/sobre">Sobre</C.ButtonLink>
-      </C.PageNavigation>
 
       <C.ButtonWrapper>
         {isAuth && (

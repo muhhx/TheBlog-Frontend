@@ -147,17 +147,6 @@ export default function Register() {
               setState={setMatchPwd}
               error="As senhas precisam ser iguais."
             />
-
-            {/* <C.Panel>
-                  Sua senha deve conter:
-                  <br />
-                  8 a 24 caracteres.
-                  <br />
-                  Caracter em uppercase, lowercase, um número e um caracter
-                  especial.
-                  <br />
-                  Os caracteres especiais permitidos são ! @ # $ %
-                </C.Panel> */}
           </C.InputWrapper>
 
           <C.ButtonContainer>
