@@ -10,6 +10,7 @@ interface IProps {
   type: "publicPost" | "userPosts" | "userFavorites";
   post: IPost;
   isCurrentUser: boolean;
+  lastPostElementRef?: (node: any) => void;
 }
 
 const ARROW_ICON =
@@ -21,7 +22,12 @@ const DELETE_ICON =
 const EDIT_ICON =
   "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2018/png/iconmonstr-text-28.png&r=255&g=255&b=255";
 
-export default function Card({ post, type, isCurrentUser }: IProps) {
+export default function Card({
+  post,
+  type,
+  isCurrentUser,
+  lastPostElementRef,
+}: IProps) {
   const dispatch: AppDispatch = useDispatch();
   const { open } = usePanel();
 
@@ -30,7 +36,7 @@ export default function Card({ post, type, isCurrentUser }: IProps) {
   };
 
   return (
-    <C.Container>
+    <C.Container ref={lastPostElementRef || undefined}>
       <C.Image image={post.image}>
         <C.Fade />
       </C.Image>

@@ -52,3 +52,16 @@ export interface IPost {
   status: "idle" | "pending" | "success" | "failure";
   error: null | string;
 }
+
+export interface IPostResponse {
+  _id: string;
+  authorId: string;
+  slug: string;
+  title: string;
+  summary: string;
+  content: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}

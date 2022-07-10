@@ -13,7 +13,7 @@ const MENU_ICON =
 
 export default function Header() {
   const [currentPage, setCurrentPage] = useState<
-    null | "discover" | "foryou" | "search"
+    null | "discover" | "foryou" | "search" | "sobre"
   >(null);
 
   const [status, error, logout] = useLogout();
@@ -26,6 +26,7 @@ export default function Header() {
     if (pathname === "/") setCurrentPage("discover");
     else if (pathname === "/foryou") setCurrentPage("foryou");
     else if (pathname.includes("search")) setCurrentPage("search");
+    else if (pathname.includes("sobre")) setCurrentPage("sobre");
     else setCurrentPage(null);
   }, [pathname]);
 
@@ -41,21 +42,21 @@ export default function Header() {
             Discover
           </C.PageNavigation>
 
-          {/* {auth.isAuth && (
+          {auth.isAuth && (
             <C.PageNavigation
               onClick={() => navigate("/foryou")}
               isSelected={currentPage === "foryou" ? true : false}
             >
               For You
             </C.PageNavigation>
-          )} */}
+          )}
 
-          {/* <C.PageNavigation
-            onClick={() => navigate("/search")}
-            isSelected={currentPage === "search" ? true : false}
+          <C.PageNavigation
+            onClick={() => navigate("/sobre")}
+            isSelected={currentPage === "sobre" ? true : false}
           >
-            Search
-          </C.PageNavigation> */}
+            Sobre
+          </C.PageNavigation>
         </C.Wrapper>
 
         {auth.isAuth && (

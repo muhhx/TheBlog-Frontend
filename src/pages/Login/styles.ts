@@ -5,7 +5,7 @@ interface IStyledProps {
   backgroundUrl?: string;
 }
 
-export const Form = styled.form`
+export const Form = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -90,6 +90,8 @@ export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: end;
+  gap: 10px;
+  flex-wrap: wrap;
 `;
 
 export const Button = styled.button`
@@ -98,6 +100,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 100px;
   min-height: 36px;
+  min-width: 130px;
   font-family: inherit;
   color: white;
   font-weight: 600;
@@ -106,6 +109,7 @@ export const Button = styled.button`
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
 
   &:disabled {
@@ -116,6 +120,10 @@ export const Button = styled.button`
 
   &:hover:enabled {
     background-color: #0d66d0;
+  }
+
+  @media only screen and (max-width: 452px) {
+    width: 100%;
   }
 `;
 
@@ -159,4 +167,64 @@ export const Error = styled.div`
   display: flex;
   justify-content: center;
   text-align: center;
+`;
+
+export const Read = styled.button`
+  background-color: #fff;
+  border: solid 1px #e8e8e8;
+  border-radius: 100px;
+  min-height: 36px;
+  font-family: inherit;
+  color: #191919;
+  font-weight: 600;
+  padding: 5px 20px;
+  text-align: start;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:enabled {
+    background-color: #f1f1f1;
+    border-color: #e8e8e8;
+  }
+
+  @media only screen and (max-width: 452px) {
+    width: 100%;
+  }
+`;
+export const Icon = styled.div`
+  height: 10px;
+  width: 10px;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+`;
+
+export const ReadDivisor = styled.span`
+  color: #dfdfdf;
+  font-size: 14px;
+  font-weight: 300;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+export const FlexButton = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Ancor = styled.a`
+  text-decoration: none;
+  color: inherit;
+
+  @media only screen and (max-width: 452px) {
+    width: 100%;
+  }
+`;
+
+export const GoogleSpan = styled.span`
+  color: #323232;
+  font-weight: 600;
 `;

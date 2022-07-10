@@ -26,7 +26,7 @@ export default function Login() {
   };
 
   return (
-    <C.Form onSubmit={handleLogin}>
+    <C.Form>
       <p>THE BLOG.</p>
       <C.HeaderWrapper>
         <C.Header>Iniciar Sessão</C.Header>
@@ -34,7 +34,6 @@ export default function Login() {
           Você não possui uma conta?
           <C.NavLink to="/register"> Registrar.</C.NavLink>
         </C.Span>
-        <a href={getGoogleOauthUrl()}>Fazer login com o google</a>
         {error ? <C.Error>{error}</C.Error> : ""}
       </C.HeaderWrapper>
       <C.InputWrapper>
@@ -66,7 +65,18 @@ export default function Login() {
         </C.InputContainer>
       </C.InputWrapper>
       <C.ButtonContainer>
+        <C.Ancor href={getGoogleOauthUrl()}>
+          <C.Read>
+            <C.FlexButton>
+              <C.Icon />
+              <C.ReadDivisor>|</C.ReadDivisor>
+            </C.FlexButton>
+            <C.GoogleSpan>Login com Google</C.GoogleSpan>
+          </C.Read>
+        </C.Ancor>
+
         <C.Button
+          onClick={handleLogin}
           disabled={!email || !password || status === "loading" ? true : false}
         >
           Fazer Login

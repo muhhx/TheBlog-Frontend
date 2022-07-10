@@ -18,13 +18,13 @@ export default function Menu() {
   const [status, error, logout] = useLogout();
 
   const [currentPage, setCurrentPage] = useState<
-    null | "discover" | "foryou" | "search"
+    null | "discover" | "foryou" | "sobre"
   >(null);
 
   useEffect(() => {
     if (pathname === "/") setCurrentPage("discover");
     else if (pathname === "/foryou") setCurrentPage("foryou");
-    else if (pathname === "/search") setCurrentPage("search");
+    else if (pathname === "/sobre") setCurrentPage("sobre");
     else setCurrentPage(null);
   }, [pathname]);
 
@@ -39,15 +39,15 @@ export default function Menu() {
         <C.ButtonLink to="/">Discover</C.ButtonLink>
       </C.PageNavigation>
 
-      {/* {isAuth && (
+      {isAuth && (
         <C.PageNavigation isSelected={currentPage === "foryou" ? true : false}>
           <C.ButtonLink to="/foryou">For You</C.ButtonLink>
         </C.PageNavigation>
-      )} */}
+      )}
 
-      {/* <C.PageNavigation isSelected={currentPage === "search" ? true : false}>
-        <C.ButtonLink to="/search">Search</C.ButtonLink>
-      </C.PageNavigation> */}
+      <C.PageNavigation isSelected={currentPage === "sobre" ? true : false}>
+        <C.ButtonLink to="/sobre">Sobre</C.ButtonLink>
+      </C.PageNavigation>
 
       <C.ButtonWrapper>
         {isAuth && (

@@ -12,7 +12,7 @@ export default function Layout() {
           <Outlet />
         </C.Container>
       </C.Main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

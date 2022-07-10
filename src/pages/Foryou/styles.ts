@@ -25,6 +25,49 @@ export const Container = styled.div`
   margin-bottom: 50px;
 `;
 
+export const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+`;
+
+export const Span = styled.span`
+  font-size: 12px;
+  color: #323232;
+`;
+
+export const Button = styled.button`
+  background-color: #191919;
+  border: none;
+  border-radius: 100px;
+  min-height: 36px;
+  height: 32px;
+  font-family: inherit;
+  color: white;
+  font-weight: 600;
+  padding: 5px 20px;
+  text-align: center;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: #f4f4f4;
+    color: #bcbcbc;
+    cursor: initial;
+  }
+
+  &:hover:enabled {
+    background-color: black;
+  }
+
+  @media only screen and (max-width: 530px) {
+    width: 100%;
+  }
+`;
+
 export const ApiError = styled.div`
   padding: 5px 10px;
   color: #f4f4f4;

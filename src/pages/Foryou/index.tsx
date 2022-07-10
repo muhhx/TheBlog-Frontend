@@ -1,12 +1,14 @@
-import { useState, useRef, useCallback } from "react";
-import useDiscover from "../../hooks/useDiscover";
-import Spinner from "../../components/Spinner";
+import { useState, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import useForyou from "../../hooks/useFotyou";
 import Card from "../../components/Card";
+import Spinner from "../../components/Spinner";
 import * as C from "./styles";
 
-export default function Dashboard() {
+export default function Foryou() {
+  const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(0);
-  const [status, error, hasMore, posts] = useDiscover(pageNumber);
+  const [status, error, hasMore, posts] = useForyou(pageNumber);
 
   const observer: any = useRef();
   const lastPostElementRef = useCallback(
@@ -25,9 +27,18 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1>Todos os posts</h1>
-      <span>Aqui aparecerao todos os posts...</span>
-      <span>Divisor igual na pagina de comentarios</span>
+      {!hasMore &&
+        status !== "failure" &&
+        status !== "loading" &&
+        status !== "idle" &&
+        posts.length === 0 && (
+          <C.Wrapper>
+            <C.Span>
+              Nesta página aparecerão os posts das pessoas que você segue.
+            </C.Span>
+            <C.Button onClick={() => navigate("/")}>Navegar posts</C.Button>
+          </C.Wrapper>
+        )}
 
       <C.PostsContainer>
         {posts.map((post, index) => {
@@ -54,15 +65,15 @@ export default function Dashboard() {
         })}
       </C.PostsContainer>
 
-      {status === "failure" && (
+      {status === "loading" && (
         <C.Container>
-          <C.ApiError>{error}</C.ApiError>
+          <Spinner />
         </C.Container>
       )}
 
-      {(status === "idle" || status === "loading") && (
+      {status === "failure" && (
         <C.Container>
-          <Spinner />
+          <C.ApiError>{error}</C.ApiError>
         </C.Container>
       )}
     </>

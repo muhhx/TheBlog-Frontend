@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from "./app/store";
 
 import { fetchAuth } from "./features/auth/authSlice";
 import { fetchBackground } from "./features/background/backgroundSlice";
-import { fetchPosts } from "./features/posts/postsSlice";
 
 import Routing from "./Routing";
 import GlobalStyle from "./global";
@@ -17,7 +16,6 @@ export default function App() {
   useEffect(() => {
     if (auth.status === "idle") {
       dispatch(fetchAuth());
-      dispatch(fetchPosts());
       dispatch(fetchBackground());
     }
   }, []);
