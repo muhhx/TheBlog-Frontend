@@ -5,7 +5,7 @@ const path = require('path');
 dotenv.config()
 const app = express()
 const distPath = path.join(__dirname, "..", "dist")
-const port = process.env.VITE_APP_API_URL || 3000
+const port = process.env.PORT || 3000
 
 app.use(express.static(distPath));
 
