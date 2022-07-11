@@ -7,10 +7,11 @@ const app = express()
 const distPath = path.join(__dirname, "..", "dist")
 const port = process.env.PORT || 3000
 
-app.use(express.static(distPath));
+app.use(express.static('./dist'));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'))
+    // res.sendFile(path.join(distPath, 'index.html'))
+    res.sendFile('./dist/index.html')
 })
 
 app.listen(port, () => {
