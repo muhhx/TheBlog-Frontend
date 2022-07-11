@@ -21,7 +21,6 @@ export default function ConfirmEmail() {
       setLoading(true);
       const response = await axiosPublic.post("/api/confirmemail", { email });
 
-      console.log(response);
       setSuccess(true);
       setEmail("");
       setError("");
