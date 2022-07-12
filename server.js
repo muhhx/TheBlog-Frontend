@@ -4,16 +4,17 @@ const path = require('path');
 
 dotenv.config()
 const app = express()
-const distPath = path.join(__dirname, "..", "dist")
+const distPath = path.join(__dirname, ".", "dist")
 const port = process.env.PORT || 3000
 
 app.use(express.static(distPath));
 
 app.get('*', (req, res) => {
-    console.log("1, ", port, distPath)
     res.sendFile(path.join(distPath, 'index.html'))
 })
 
 app.listen(port, () => {
+    console.log("1, ", port, distPath)
+    console.log("2, ", path.join(__dirname, "..", "dist"))
     console.log("Running")
 })
