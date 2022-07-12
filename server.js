@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000
 app.use(express.static(distPath));
 
 app.get('*', (req, res) => {
+    console.log("1, ", port, distPath)
     res.sendFile(path.join(distPath, 'index.html'))
 })
 
