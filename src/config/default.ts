@@ -3,5 +3,5 @@ export default {
   GOOGLE_CLIENT_ID:
     "685092824894-utjqq7kh1jhuv51k6dsdevspkgjglb3p.apps.googleusercontent.com",
   GOOGLE_OAUTH_REDIRECT_URL:
-    "https://theblogsocial.herokuapp.com/api/session/oauth/google",
+    "https://theblog-social-backend.herokuapp.com/api/session/oauth/google",
 };
