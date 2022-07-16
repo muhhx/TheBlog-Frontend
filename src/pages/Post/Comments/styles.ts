@@ -5,7 +5,7 @@ interface IProps {
 }
 
 export const Title = styled.h1`
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 `;
 
 export const Container = styled.div`
