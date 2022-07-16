@@ -36,7 +36,7 @@ export default function Routing() {
             <Route path="/confirmemail" element={<ConfirmEmail />} />
             <Route path="/confirmemail/:id" element={<ValidateEmail />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/forgotpassword/:id" element={<ResetPassword />} />
+            <Route path="/resetpassword/:id" element={<ResetPassword />} />
           </Route>
 
           <Route element={<PrivateRoute />}>
