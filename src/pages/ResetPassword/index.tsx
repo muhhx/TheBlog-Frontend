@@ -40,7 +40,10 @@ export default function ResetPassword() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axiosPublic.put(`/api/resetpassword/${id}`);
+      const response = await axiosPublic.put(`/api/resetpassword/${id}`, {
+        password: pwd,
+        passwordConfirmation: matchPwd,
+      });
 
       setSuccess(true);
       setPwd("");
