@@ -119,13 +119,12 @@ export const Unauthorized = styled.div`
   width: 100%;
   height: 300px;
   background: linear-gradient(transparent, #f8f8f8 40%);
-  position: absolute;
-  bottom: 0;
-  padding-top: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-top: solid 1px #dfdfdf;
+  border-bottom: solid 1px #dfdfdf;
 `;
 
 export const Span = styled.span`

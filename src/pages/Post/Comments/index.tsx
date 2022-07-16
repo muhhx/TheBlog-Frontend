@@ -19,9 +19,7 @@ export default function Comments({ auth }: { auth: IAuth }) {
 
   return (
     <C.Container>
-      <h1>Comentários</h1>
-
-      {!auth.isAuth && <div>Faça o login para continuar</div>}
+      <C.Title>Comentários</C.Title>
 
       {auth.isAuth && auth.picture && (
         <C.CommentContainer>

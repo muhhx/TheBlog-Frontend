@@ -4,6 +4,10 @@ interface IProps {
   image: string;
 }
 
+export const Title = styled.h1`
+  padding-bottom: 50px;
+`;
+
 export const Container = styled.div`
   width: 100%;
   display: flex;

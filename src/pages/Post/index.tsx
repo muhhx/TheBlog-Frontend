@@ -46,23 +46,6 @@ export default function Post() {
               <C.Summary>{post.data.summary}</C.Summary>
             </C.HeaderContainer>
             <C.Image image={post.data.image} />
-          </>
-        )}
-
-        {post.status === "success" && !auth.isAuth && (
-          <>
-            <C.Unauthorized>
-              <C.Span>
-                Faça o <C.NavLink to="/login">Login</C.NavLink> ou
-                <C.NavLink to="/register"> Registre-se</C.NavLink> para poder
-                continuar lendo nosso conteúdo!
-              </C.Span>
-            </C.Unauthorized>
-          </>
-        )}
-
-        {post.status === "success" && auth.isAuth && (
-          <>
             <C.UserContainer>
               <C.User>
                 <C.Picture image={post.user.picture} />
@@ -85,9 +68,23 @@ export default function Post() {
                 isCurrentUser={post.isCurrentUser}
               />
             </C.UserContainer>
-            <C.ContentContainer>
-              <Content content={post.data.content} />
-            </C.ContentContainer>
+
+            {auth.isAuth && (
+              <C.ContentContainer>
+                <Content content={post.data.content} />
+              </C.ContentContainer>
+            )}
+
+            {!auth.isAuth && (
+              <C.Unauthorized>
+                <C.Span>
+                  Faça o <C.NavLink to="/login">Login</C.NavLink> ou
+                  <C.NavLink to="/register"> Registre-se</C.NavLink> para poder
+                  ler nosso conteúdo!
+                </C.Span>
+              </C.Unauthorized>
+            )}
+
             <Comments auth={auth} />
           </>
         )}
